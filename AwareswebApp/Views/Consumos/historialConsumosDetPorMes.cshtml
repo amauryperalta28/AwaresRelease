@@ -1,0 +1,63 @@
+﻿@model IEnumerable<AwareswebApp.Models.HistDetConsumoViewModel>
+@{
+    ViewBag.Title = "historialConsumosDetPorMes";
+}
+
+
+<div id="page">
+    <div id="content">
+        <div class="box">
+
+        </div>
+
+        <h2>Consumos</h2>
+
+       
+
+        @using (Html.BeginForm())
+        {
+            <p>
+                Colaborador: @Html.DropDownList("colabFilter", "All")
+                Year: @Html.DropDownList("yearFilter")
+                <input type="submit" class="btn btn-default dropdown-toggle" value="Filter" />
+            </p>
+        }
+
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayName("usuario")
+                </th>
+                <th> @Html.DisplayName("Mes") </th>
+                <th>
+                    @Html.DisplayName("Total Consumo")
+                </th>
+                
+                <th></th>
+            </tr>
+
+            @foreach (var item in ViewBag.consumos)
+            {
+               <tr>
+                   <td>
+
+                       @item.username
+                    </td>
+                    <td>
+
+                        @item.month
+                    </td>
+                    <td>
+                        @item.consumo
+                    </td>
+                    
+                </tr>
+            }
+
+        </table>
+
+        <br class="clearfix" />
+    </div>
+
+    <br class="clearfix" />
+</div>

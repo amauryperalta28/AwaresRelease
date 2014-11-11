@@ -1,0 +1,77 @@
+﻿@model IEnumerable<AwareswebApp.Models.HistGenConsumoViewModel>
+
+@{
+    ViewBag.Title = "Consumos";
+}
+
+
+<div id="page">
+    <div id="content">
+        <div class="box">
+
+        </div>
+
+        <h2>Consumos</h2>
+
+        @*<p>
+                @Html.ActionLink("Create New", "Create")
+            </p>*@
+
+        @using (Html.BeginForm())
+        {
+            <p>
+                Colaborador: @Html.DropDownList("colabFilter", "All")
+                Mes: @Html.DropDownList("monthFilter", "All")
+                Year: @Html.DropDownList("yearFilter", "All")
+                <input type="submit" class="btn btn-default dropdown-toggle" value="Filter" />
+            </p>
+        }
+
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayName("Usuario")
+                </th>
+                <th>
+                    @Html.DisplayName("Total Consumo")
+                </th>
+                @*<th>
+                        @Html.DisplayNameFor(model => model.lectura)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.fechaCreacion)
+                    </th>*@
+                <th></th>
+            </tr>
+
+            @foreach (var item in ViewBag.consumos)
+            {
+                <tr>
+                    <td>
+
+                        @item.username
+                    </td>
+                    <td>
+                        @item.consumo
+                    </td>
+                    @*<td>
+                            @Html.DisplayFor(modelItem => item.username)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.consumo)
+                        </td>*@
+                    @*<td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.idConsumo }) |
+                            @Html.ActionLink("Details", "Details", new { id = item.idConsumo }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.idConsumo })
+                        </td>*@
+                </tr>
+            }
+
+        </table>
+
+        <br class="clearfix" />
+    </div>
+
+    <br class="clearfix" />
+</div>

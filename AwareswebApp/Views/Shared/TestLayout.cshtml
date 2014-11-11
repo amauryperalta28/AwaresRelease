@@ -1,0 +1,156 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+Design by TEMPLATED
+http://templated.co
+Released for free under the Creative Commons Attribution License
+
+Name       : Big Business 2.0
+Description: A two-column, fixed-width design with a bright color scheme.
+Version    : 1.0
+Released   : 20120624
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <title>@ViewBag.Title - AwareS</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    
+    
+    
+    <link href="~/Content/Theme/style.css" rel="stylesheet" />
+
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="~/Content/Theme/jquery.dropotron-1.0.js"></script>
+    <script src="~/Content/Theme/jquery.slidertron-1.1.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#menu > ul').dropotron({
+                mode: 'fade',
+                globalOffsetY: 11,
+                offsetY: -15
+            });
+            
+        });
+    </script>
+</head>
+<body>
+    <div id="wrapper">
+        <div id="header">
+            <div id="logo">
+                <h1><a href="@Url.Action("Index","Home")">Awares</a></h1>
+            </div>
+            <div id="slogan">
+                <h2>Forma Parte de la soluci&oacuten</h2>
+            </div>
+        </div>
+        <div id="menu">
+            <ul>
+                <li class="first">
+                    <span class="opener">Opciones<b></b></span>
+                    <ul>
+                        <li>
+                            <span>Consumos<b></b></span>
+                            <ul>
+                                <li><a href="@Url.Action("Menu","Consumos")">Historial</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <span>Administracion<b></b></span>
+                            <ul>
+                                <li><a href="@Url.Action("Index","Colaboradores")">Colaboradores</a></li>
+                            </ul>
+                        </li>
+                       
+                        <li>
+                            <span>Reportes e Inteligencia<b></b></span>
+                            <ul>
+                                <li><a href="@Url.Action("Index", "Reportes")">Casos</a></li>
+                                <li><a href="@Url.Action("ZonasMasAfectadas", "Reportes")">Zonas m&aacutes Afectadas</a></li>
+                                <li><a href="#">Estad&iacutesticas</a></li>
+                              
+                            </ul>
+                        </li>
+                       
+                       
+                    </ul>
+                </li>
+               
+                @*<li>
+                    <span class="opener">Support<b></b></span>
+                    <ul>
+                        <li><a href="#">Lorem Ipsum</a></li>
+                        <li><a href="#">Consequat Dolor</a></li>
+                        <li><a href="#">Magna Feugiat</a></li>
+                        <li>
+                            <span>Sed Tempus<b></b></span>
+                            <ul>
+                                <li><a href="#">Lorem Ipsum</a></li>
+                                <li><a href="#">Consequat Dolor</a></li>
+                                <li><a href="#">Magna Feugiat</a></li>
+                                <li><a href="#">Sed Tempus</a></li>
+                                <li><a href="#">Etiam Nullam</a></li>
+                                <li><a href="#">Amet Phasellus</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#">Etiam Nullam</a></li>
+                        <li><a href="#">Amet Phasellus</a></li>
+                    </ul>
+                </li>*@
+                
+                <li><a href="@Url.Action("About","Home")">Acerca</a></li>
+                <li class="last"><a href="@Url.Action("Contact","Home")">Contacto</a></li>
+               
+                
+                @Html.Partial("_LoginPartial")
+            </ul>
+           
+            <br class="clearfix" />
+        </div>
+        @RenderBody()
+        @*<div id="page">
+            <div id="content">
+                <div class="box">
+                    
+                </div>
+               
+               
+                <br class="clearfix" />
+            </div>
+            
+            <br class="clearfix" />
+        </div>*@
+        <div id="page-bottom">
+            <div id="page-bottom-content">
+                
+                <h3> Autonomous Water Report System</h3>
+                <br/> <br /><br /><br />
+                
+                
+                
+            </div>
+            @*<div id="page-bottom-sidebar">
+                <h3>Servicios</h3>
+                <ul class="list">
+                    <li class="first"><a href="#">Estadisticas</a></li>
+                    <li><a href="#">Reportes</a></li>
+                    <li class="last"><a href="#">Historial de Consumos</a></li>
+                </ul>
+            </div>*@
+            <br class="clearfix" />
+        </div>
+    </div>
+    <div id="footer">
+        &copy; Awares. All rights reserved. Design by <a href="http://templated.co" rel="nofollow">TEMPLATED</a>. Photos by <a href="http://fotogrph.com/">Fotogrph</a>.
+    </div>
+
+@RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,68 @@
+﻿@model IEnumerable<AwareswebApp.Models.Colaborador>
+
+@{
+    ViewBag.Title = "Colaboradores";
+}
+
+<div id="page">
+    <div id="content">
+        <div class="box">
+
+        </div>
+        <h2>Lista de Colaboradores</h2>
+
+        @*<p>
+            @Html.ActionLink("Create New", "Create")
+        </p>*@
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.nombreUsuario)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Email)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.sector)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.fechaCreacion)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.nombreUsuario)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.sector)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.fechaCreacion)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.idColaborador }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.idColaborador }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.idColaborador })
+                    </td>
+                </tr>
+            }
+
+        </table>
+
+        <br class="clearfix" />
+    </div>
+
+    <br class="clearfix" />
+</div>
+

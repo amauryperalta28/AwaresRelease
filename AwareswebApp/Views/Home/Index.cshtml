@@ -1,0 +1,84 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<script type="text/javascript">
+	$(function() {
+		$('#menu > ul').dropotron({
+			mode: 'fade',
+			globalOffsetY: 11,
+			offsetY: -15
+		});
+		$('#slider').slidertron({
+			viewerSelector: '.viewer',
+			indicatorSelector: '.indicator span',
+			reelSelector: '.reel',
+			slidesSelector: '.slide',
+			speed: 'slow',
+			advanceDelay: 4000
+		});
+	});
+</script>
+<div id="slider">
+    <div class="viewer">
+        <div class="reel">
+            <div class="slide">
+                <img src="~/Content/Theme/images/slide01.jpg" alt="" />
+            </div>
+            <div class="slide">
+                <img src="~/Content/Theme/images/slide02.jpg" alt="" />
+            </div>
+            <div class="slide">
+                <img src="~/Content/Theme/images/slide03.jpg" alt="" />
+            </div>
+            <div class="slide">
+                <img src="~/Content/Theme/images/slide04.jpg" alt="" />
+            </div>
+            <div class="slide">
+                <img src="~/Content/Theme/images/slide05.jpg" alt="" />
+            </div>
+        </div>
+    </div>
+    <div class="indicator">
+        <span>1</span>
+        <span>2</span>
+        <span>3</span>
+        <span>4</span>
+        <span>5</span>
+    </div>
+</div>
+
+<div id="page">
+    <div id="content">
+        <div class="jumbotron">
+            <h2>Bienvenidos a Awares </h2>
+            <p>  Aplicacion Web para el despliegue de informacion de inteligencia, correspondiente a datos de Reportes de Averias y fugas.</p>
+        </div>
+
+        <div class="box" id="content-box1">
+            <h3>Servicios</h3>
+            <ul class="section-list">
+                <li class="first">
+                    <img class="pic alignleft" src="~/Content/Theme/images/pic01.jpg" width="70" height="70" alt="" />
+                    <span>Reportes Diversos</span>
+                </li>
+                <li>
+                    <img class="pic alignleft" src="~/Content/Theme/images/pic02.jpg" width="70" height="70" alt="" />
+                    <span>Estadisticas</span>
+                </li>
+                <li class="last">
+                    <img class="pic alignleft" src="~/Content/Theme/images/pic03.jpg" width="70" height="70" alt="" />
+                    <span>Historial de Consumos</span>
+                </li>
+            </ul>
+        </div>
+
+        <br class="clearfix" />
+    </div>
+
+    <br class="clearfix" />
+</div>
+  
+
+
+
+

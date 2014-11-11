@@ -1,0 +1,50 @@
+﻿@model AwareswebApp.Models.Consumo
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Consumo</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.UsernameColaborador)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UsernameColaborador)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tipoConsumo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tipoConsumo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.lectura)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.lectura)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fechaCreacion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fechaCreacion)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.idConsumo }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

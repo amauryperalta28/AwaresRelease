@@ -1,0 +1,220 @@
+﻿@model IEnumerable<AwareswebApp.Models.Reporte>
+@using Microsoft.Ajax.Utilities
+
+@{
+    ViewBag.Title = "Reportes";
+}
+
+
+<div id="page">
+    <div id="content">
+        <div class="box">
+
+        </div>
+
+        <h2>Lista de Reportes</h2>
+
+        <div id="map_canvas" style="width: 880px; height: 560px;border-style:solid;border-width:5px;border-color:ActiveBorder">  </div>
+
+        @*<p>
+            @Html.ActionLink("Create New", "Create")
+        </p>*@
+
+        @using (Html.BeginForm())
+        {
+            <p>
+                Situación:  @Html.DropDownList("tipoSituacion", "All")
+                Sector: @Html.DropDownList("sector", "All")
+                Localidad: @Html.DropDownList("localidad", "All")
+                
+                <input type="submit" class="btn btn-default dropdown-toggle" value="Filter" />
+
+
+            </p>
+        }
+
+
+        <table class="table table-hover">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.numReporteUsr)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.userName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Descripcion)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.situacion)
+                </th>
+                @*<th>
+                    @Html.DisplayNameFor(model => model.ubicacion)
+                </th>*@
+
+                <th>
+                    @Html.DisplayNameFor(model => model.Comentarios)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.estatus)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.fechaCreacion)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.fechaCorreccion)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.numReporteUsr)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.userName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Descripcion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.situacion)
+                    </td>
+                    @*<td>
+                        @Html.DisplayFor(modelItem => item.ubicacion)
+                    </td>*@
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Comentarios)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.estatus)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.fechaCreacion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.fechaCorreccion)
+                    </td>
+                    <td>
+                        @*@Html.ActionLink("Edit", "Edit", new { id=item.numReporte }) |
+                        @Html.ActionLink("Details", "Details", new { id=item.numReporte }) |
+                        @Html.ActionLink("Delete", "Delete", new { id=item.numReporte })*@
+                    </td>
+                </tr>
+            }
+
+        </table>
+
+        <br class="clearfix" />
+    </div>
+
+    <br class="clearfix" />
+</div>
+@*@Scripts.Render("~/bundles/jquery")
+<div id="map_canvas" style="width: 910px; height: 360px;border-style:solid;border-width:5px;border-color:ActiveBorder">  </div>*@
+
+
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        initialize();
+    });
+    function initialize() {
+
+        var coordenada =  @Html.Raw(Json.Encode(@ViewBag.coordenadas));
+        var latitud = '@ViewBag.Latitud';
+        var longitud = '@ViewBag.Longitud';
+
+        var mapOptions = {
+            center: new google.maps.LatLng(latitud, longitud),
+            zoom: 11,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            mapTypeControl: true,
+            mapTypeControlOptions: {
+                style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+                position: google.maps.ControlPosition.BOTTOM_CENTER
+            },
+            panControl: true,
+            panControlOptions: {
+                position: google.maps.ControlPosition.TOP_LEFT
+            },
+            zoomControl: true,
+            zoomControlOptions: {
+                style: google.maps.ZoomControlStyle.LARGE,
+                position: google.maps.ControlPosition.LEFT_CENTER
+            },
+            scaleControl: true,
+            streetViewControl: true,
+            streetViewControlOptions: {
+                position: google.maps.ControlPosition.LEFT_TOP
+            }
+        };
+        google.maps.visualRefresh = true;
+        var map = new google.maps.Map(document.getElementById("map_canvas"),
+          mapOptions);
+
+        var Escasez = "http://www.google.com/intl/en_us/mapfiles/ms/micons/green-dot.png"
+        var averia = "http://www.clker.com/cliparts/I/l/L/S/W/9/map-marker.svg"
+        var circle = {
+            path: google.maps.SymbolPath.CIRCLE,
+            fillColor: "green",
+            fillOpacity: .2,
+            strokeColor: 'white',
+            strokeWeight: .5,
+            scale: 30
+        };
+
+        coordenada.forEach(function (entry) {
+            if(entry.estatus == 1)
+            {
+                var estatus = "No resuelto"
+            }
+            else
+            {
+                var estatus = "Resuelto"
+            }
+            marker = new google.maps.Marker({
+                position: new google.maps.LatLng(entry.latitud, entry.longitud),
+                map: map,
+                title: entry.situacion + "\nColaborador: "+entry.userName + " \nEstatus: "+ estatus,
+                icon: detallesDeMarcadores(entry.situacion)
+                
+            });
+
+            
+            google.maps.event.addListener(marker, 'click', function() {
+                map.setZoom(18);
+                map.setCenter(new google.maps.LatLng(entry.latitud, entry.longitud));
+            });
+        });
+
+        $(function () {
+            $('#menu > ul').dropotron({
+                mode: 'fade',
+                globalOffsetY: 11,
+                offsetY: -15
+            });
+            
+        });
+
+      
+        function detallesDeMarcadores(IdSituacion)
+        {
+            var markerLogo;
+
+            if(IdSituacion == "Escasez"){
+                markerLogo = new google.maps.MarkerImage(Escasez,
+                null, null,null, new google.maps.Size(35, 35));  }
+         
+            if(IdSituacion == "Averia"){
+                markerLogo = new google.maps.MarkerImage(averia,
+                null, null,null, new google.maps.Size(45, 45));  }
+
+            return markerLogo;
+        }
+    }
+
+</script>  
