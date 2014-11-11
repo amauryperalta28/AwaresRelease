@@ -28,7 +28,12 @@ namespace AwareswebApp
             //    name: "CreacionColab",
             //    url: "{controller}/{action}/{usuario}/{email}/{password}"
             //);
-
+            // Eliminar ruta
+            routes.MapRoute(
+                name: "CreacionColabUsuario",
+                url: "{controller}/{action}/{usuario}/{email}/{password}",
+                  defaults: new { controller = "Account", action = "RegisterCustom" }
+            );
             routes.MapRoute(
                 name: "Creacionreportes",
                 url: "{controller}/{action}/{numReporteUsr}/{userName}/{situacion}/{longitud}/{latitud}/{sector}"

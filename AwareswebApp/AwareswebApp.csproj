@@ -279,6 +279,7 @@
     <Content Include="Views\Roles\ManageUserRoles.cshtml" />
     <Content Include="Views\Consumos\historialConsumosGeneral.cshtml" />
     <Content Include="Views\Consumos\historialConsumosDetPorMes.cshtml" />
+    <Content Include="Views\Account\RegisterCustom.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
