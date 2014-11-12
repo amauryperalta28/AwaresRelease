@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using AwareswebApp.Models;
 using System.Xml.Linq;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace AwareswebApp.Controllers
 {
@@ -233,7 +234,9 @@ namespace AwareswebApp.Controllers
         
         public async Task<JsonResult>  Crear(int numReporteUsr, string userName, string situacion, double longitud, double latitud, string sector1)
         {
-          var result = await RetrieveFormatedAddress(latitud.ToString(),longitud.ToString());
+          await RetrieveFormatedAddress(latitud.ToString(),longitud.ToString());
+          string s = sector;
+          
             //Tomo el username y verifico si el colaborador existe
           var colabExiste = (from a in db.Colaboradores
                              where a.nombreUsuario == userName
@@ -262,26 +265,27 @@ namespace AwareswebApp.Controllers
         }
 
         #region Geocode
-        public Task<int> RetrieveFormatedAddress(string lat, string lng)
+        public async Task RetrieveFormatedAddress(string lat, string lng)
         {
-            
-            return Task.Factory.StartNew(() =>
-                {
-                    string requestUri = string.Format(baseUri, lat, lng);
+          var result=  Task.Factory.StartNew(()=> downloadLinkReverseGeoCode(lat,lng));
+          await Task.WhenAll(result);
+          Thread.Sleep(2000);
+          string s = sector;
 
-                    using (WebClient wc = new WebClient())
-                    {
-                        wc.DownloadStringCompleted += new DownloadStringCompletedEventHandler(wc_DownloadStringCompleted);
-                        wc.DownloadStringAsync(new Uri(requestUri));
-                        
-                        
-                    }
-                                       
-                    return 1; 
-                }
-                );
         }
+        private void downloadLinkReverseGeoCode(string lat, string lng)
+        {
+            string requestUri = string.Format(baseUri, lat, lng);
 
+            using (WebClient wc = new WebClient())
+            {
+                wc.DownloadStringCompleted += new DownloadStringCompletedEventHandler(wc_DownloadStringCompleted);
+                wc.DownloadStringAsync(new Uri(requestUri));
+
+
+            }
+        
+        }
         public void wc_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
         {
             var xmlElm = XElement.Parse(e.Result);

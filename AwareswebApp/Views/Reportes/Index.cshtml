@@ -36,9 +36,9 @@
 
         <table class="table table-hover">
             <tr>
-                <th>
+                @*<th>
                     @Html.DisplayNameFor(model => model.numReporteUsr)
-                </th>
+                </th>*@
                 <th>
                     @Html.DisplayNameFor(model => model.userName)
                 </th>
@@ -48,31 +48,39 @@
                 <th>
                     @Html.DisplayNameFor(model => model.situacion)
                 </th>
+
+                <th>
+                   @Html.DisplayNameFor(model => model.sector)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.calle)
+                </th>
                 @*<th>
                     @Html.DisplayNameFor(model => model.ubicacion)
                 </th>*@
 
-                <th>
+                @*<th>
                     @Html.DisplayNameFor(model => model.Comentarios)
-                </th>
+                </th>*@
                 <th>
                     @Html.DisplayNameFor(model => model.estatus)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.fechaCreacion)
                 </th>
-                <th>
+                @*<th>
                     @Html.DisplayNameFor(model => model.fechaCorreccion)
-                </th>
+                </th>*@
                 <th></th>
             </tr>
 
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>
+                    @*<td>
                         @Html.DisplayFor(modelItem => item.numReporteUsr)
-                    </td>
+                    </td>*@
                     <td>
                         @Html.DisplayFor(modelItem => item.userName)
                     </td>
@@ -82,22 +90,29 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.situacion)
                     </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.sector)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.calle)
+                    </td>
+
                     @*<td>
                         @Html.DisplayFor(modelItem => item.ubicacion)
                     </td>*@
 
-                    <td>
+                    @*<td>
                         @Html.DisplayFor(modelItem => item.Comentarios)
-                    </td>
+                    </td>*@
                     <td>
                         @Html.DisplayFor(modelItem => item.estatus)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.fechaCreacion)
                     </td>
-                    <td>
+                    @*<td>
                         @Html.DisplayFor(modelItem => item.fechaCorreccion)
-                    </td>
+                    </td>*@
                     <td>
                         @*@Html.ActionLink("Edit", "Edit", new { id=item.numReporte }) |
                         @Html.ActionLink("Details", "Details", new { id=item.numReporte }) |
