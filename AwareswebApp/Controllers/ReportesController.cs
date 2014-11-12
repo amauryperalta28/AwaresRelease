@@ -235,28 +235,29 @@ namespace AwareswebApp.Controllers
         {
           var result = await RetrieveFormatedAddress(latitud.ToString(),longitud.ToString());
             //Tomo el username y verifico si el colaborador existe
-
-            var colabExiste = (from a in db.Colaboradores
-                              where a.nombreUsuario == userName
-                              select a).ToList().Count;
-            // Se busca en la BD el numero de reporte relativo al usuario enviado
-            var numReportExist = (from a in db.Reportes
-                                  where a.numReporteUsr == numReporteUsr &&
-                                        a.userName == userName
-                                  select a).ToList().Count;
-            /* Se verifica que el colaborador exista y que la secuencia de reporte relativo
-             Al usuario no este repetido*/
-            if (colabExiste == 1 && numReportExist == 0)
-            {
-                Reporte report = new Reporte(numReporteUsr, userName, situacion, longitud, latitud,pais,localidad,sector,calle);
-                db.Reportes.Add(report);
-                db.SaveChanges();
-                return Json(1, JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
-                return Json(0, JsonRequestBehavior.AllowGet);
-            }
+          var colabExiste = (from a in db.Colaboradores
+                             where a.nombreUsuario == userName
+                             select a).ToList().Count;
+          // Se busca en la BD el numero de reporte relativo al usuario enviado
+          //var numReportExist = (from a in db.Reportes
+          //                      where a.numReporteUsr == numReporteUsr &&
+          //                            a.userName == userName
+          //                      select a).ToList().Count;
+            
+           
+            ///* Se verifica que el colaborador exista y que la secuencia de reporte relativo
+            // Al usuario no este repetido*/
+          if (colabExiste == 1)
+          {
+              Reporte report = new Reporte(numReporteUsr, userName, situacion, longitud, latitud, pais, localidad, sector, calle);
+              db.Reportes.Add(report);
+              db.SaveChanges();
+              return Json(1, JsonRequestBehavior.AllowGet);
+          }
+          else
+          {
+              return Json(0, JsonRequestBehavior.AllowGet);
+          }
 
         }
 
@@ -272,9 +273,12 @@ namespace AwareswebApp.Controllers
                     {
                         wc.DownloadStringCompleted += new DownloadStringCompletedEventHandler(wc_DownloadStringCompleted);
                         wc.DownloadStringAsync(new Uri(requestUri));
+                        
+                        
                     }
                                        
-                    return 1; }
+                    return 1; 
+                }
                 );
         }
 
@@ -293,7 +297,11 @@ namespace AwareswebApp.Controllers
             sector = data1.ElementAt(1).Element("long_name").Value;
             localidad = data1.ElementAt(2).Element("long_name").Value;
             pais = data1.ElementAt(4).Element("long_name").Value;
+
             
+            
+            
+
            
         }
         #endregion
