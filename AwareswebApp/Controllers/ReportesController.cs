@@ -10,6 +10,8 @@ using AwareswebApp.Models;
 using System.Xml.Linq;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Web.UI.DataVisualization.Charting;
+
 
 namespace AwareswebApp.Controllers
 {
@@ -24,6 +26,23 @@ namespace AwareswebApp.Controllers
         
 
         static string baseUri = "http://maps.googleapis.com/maps/api/geocode/xml?latlng={0},{1}&sensor=false";
+
+        public ActionResult BuildChart()
+        {
+
+            return View();
+        }
+
+        public ActionResult showChart()
+        {
+            return View();
+        }
+        public ActionResult showChart2()
+        {
+            var data = from a in db.Reportes
+                       select a;
+            return Json(data.ToList().FirstOrDefault(), JsonRequestBehavior.AllowGet);
+        }
         public ActionResult Menu()
         {
             
@@ -222,8 +241,14 @@ namespace AwareswebApp.Controllers
             if (usuario == 1)
             {
                 var rep = from a in db.Reportes
-                               where a.userName == userName
-                               select a;
+                          where a.userName == userName
+                          select new { username = a.userName,
+                                       situacion = a.situacion,
+                                       sector = a.sector,
+                                       estatus = a.estatus,
+                                       fechaCreacion = a.fechaCreacion.Date.ToString(),
+
+                          };
                 return Json(rep, JsonRequestBehavior.AllowGet);
             }
 
