@@ -246,7 +246,7 @@ namespace AwareswebApp.Controllers
                                        situacion = a.situacion,
                                        sector = a.sector,
                                        estatus = a.estatus,
-                                       fechaCreacion = a.fechaCreacion.Date.ToString(),
+                                       fechaCreacion = a.fechaCreacion.Day.ToString() + "/" + a.fechaCreacion.Month.ToString() + "/" + a.fechaCreacion.Year.ToString(),
 
                           };
                 return Json(rep, JsonRequestBehavior.AllowGet);

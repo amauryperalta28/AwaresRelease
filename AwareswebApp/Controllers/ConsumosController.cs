@@ -156,8 +156,8 @@ namespace AwareswebApp.Controllers
             //Verifico si el usuario y contrasena son validos
             if (usuario == 1)
             {
-                var rep = from a in db.Colaboradores
-                          where a.nombreUsuario == userName
+                var rep = from a in db.Consumos
+                          where a.UsernameColaborador == userName
                           select a;
                 return Json(rep, JsonRequestBehavior.AllowGet);
             }

@@ -281,7 +281,6 @@
     <Content Include="Views\Consumos\historialConsumosGeneral.cshtml" />
     <Content Include="Views\Consumos\historialConsumosDetPorMes.cshtml" />
     <Content Include="Views\Account\RegisterCustom.cshtml" />
-    <Content Include="Views\Reportes\BuildChart.cshtml" />
     <Content Include="Views\Reportes\showChart.cshtml" />
   </ItemGroup>
   <ItemGroup>
