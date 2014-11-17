@@ -229,22 +229,23 @@ namespace AwareswebApp.Controllers
          * @return Lista de reportes no resueltos
          */
         [Route("Reportes/getReportsUser/{username}/{contrasena}")]
-        public JsonResult getReportsUser(string userName1, string contrasena)
+        public JsonResult getReportsUser(string userName, string contrasena)
         {
             
             //Verifico si el usuario y contrasena son validos
             int usuario = (from a in db.Colaboradores
                           where a.Password == contrasena &&
-                                a.nombreUsuario == userName1
+                                a.nombreUsuario == userName
                           select a).ToList().Count;
             //Verifico si el usuario y contrasena son validos
             if (usuario == 1)
             {
                 var rep = from a in db.Reportes
-                          where a.userName == userName1
+                          where a.userName == userName
                           select new { userName = a.userName,
                                        situacion = a.situacion,
                                        sector = a.sector,
+                                       calle = a.calle,
                                        estatus = a.estatus,
                                        fechaCreacion = a.fechaCreacion.Day.ToString() + "/" + a.fechaCreacion.Month.ToString() + "/" + a.fechaCreacion.Year.ToString(),
 
