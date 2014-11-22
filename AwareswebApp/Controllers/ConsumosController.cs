@@ -170,7 +170,7 @@ namespace AwareswebApp.Controllers
                 //          select a;
 
                 var consumos2 = (from a in db.Consumos
-                                 where a.fechaCreacion.Year == 2014
+                                 where a.fechaCreacion.Year == 2014 && a.UsernameColaborador ==userName
                                  group a by new { a.UsernameColaborador, a.fechaCreacion.Month, a.fechaCreacion.Year } into b
                                  select new HistDetConsumoViewModel
                                  {
@@ -178,7 +178,7 @@ namespace AwareswebApp.Controllers
                                      month = b.Key.Month,
                                      year = b.Key.Year,
                                      fechaCreacion = b.Key.Month.ToString(),
-                                     consumo = b.Sum(a => a.lectura)
+                                     lectura = b.Sum(a => a.lectura)
                                  });
                 var rep = consumos2.ToList();
 
@@ -262,7 +262,7 @@ namespace AwareswebApp.Controllers
                                      UsernameColaborador = b.Key.UsernameColaborador,
                                      month = b.Key.Month,
                                      year = b.Key.Year,
-                                     consumo = b.Sum(a => a.lectura)
+                                     lectura = b.Sum(a => a.lectura)
                                  });
                 ViewBag.consumos = consumos2.ToList();
             }
@@ -276,7 +276,7 @@ namespace AwareswebApp.Controllers
                                      UsernameColaborador = b.Key.UsernameColaborador,
                                      month = b.Key.Month,
                                      year = b.Key.Year,
-                                     consumo = b.Sum(a => a.lectura)
+                                     lectura = b.Sum(a => a.lectura)
                                  });
                 ViewBag.consumos = consumos2.ToList();
             }

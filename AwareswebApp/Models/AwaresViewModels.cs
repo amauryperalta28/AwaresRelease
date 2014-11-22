@@ -34,7 +34,7 @@ namespace AwareswebApp.Models
         public int year;
 
         // Este es el consuno del usuario
-        public double consumo;
+        public double lectura;
 
         public string fechaCreacion;
     
