@@ -11,9 +11,9 @@
         <div class="box">
 
         </div>
-        <h2>Zonas mas Afectadas</h2>
+        <h2>Zonas m&aacute;s Afectadas</h2>
 
-        <div id="map_canvas" style="width: 880px; height: 560px;border-style:solid;border-width:5px;border-color:ActiveBorder">  </div>
+        <div id="map_canvas" style="width: 780px; height: 460px;border-style:solid;border-width:5px;border-color:ActiveBorder">  </div>
 
         <p>
             @Html.ActionLink("Create New", "Create")
@@ -199,16 +199,16 @@
             });
         });
 
-        bermudaTriangle = new google.maps.Polygon({
-            paths: triangleCoords,
-            strokeColor: '#FF0000',
-            strokeOpacity: 0.8,
-            strokeWeight: 3,
-            fillColor: '#FF0000',
-            fillOpacity: 0.35
-        });
+        //bermudaTriangle = new google.maps.Polygon({
+        //    paths: triangleCoords,
+        //    strokeColor: '#FF0000',
+        //    strokeOpacity: 0.8,
+        //    strokeWeight: 3,
+        //    fillColor: '#FF0000',
+        //    fillOpacity: 0.35
+        //});
 
-        bermudaTriangle.setMap(map);
+        //bermudaTriangle.setMap(map);
         function detallesDeMarcadores(IdSituacion)
         {
             var markerLogo;

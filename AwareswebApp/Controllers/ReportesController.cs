@@ -33,22 +33,56 @@ namespace AwareswebApp.Controllers
             return View();
         }
 
+        #region estadisticas
         public ActionResult showChart()
         {
             return View();
         }
         public ActionResult showChart2()
         {
+            // Porciento de fugas, averias, Tuberia rota, etc
+            Double totalReport = (from a in db.Reportes
+                                  select a).Count();
+
+            var d = (from a in db.Reportes
+                     group a by a.situacion into b
+                     select new rePortesPorTipoSituacion
+                     {
+                         situacion = b.Key,
+                         cantidad = (b.Count())
+                     });
+
             var data = from a in db.Reportes
                        select a;
-            return Json(data.ToList().FirstOrDefault(), JsonRequestBehavior.AllowGet);
+            return Json(d.ToList(), JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult Est_PorSector()
+        {
+            return View();
+        }
+
+        public ActionResult Est_PorSectorData()
+        {
+            var d = from a in db.Reportes
+                    group a by a.sector into b
+                    select new rePortesPorSector
+                    {
+                        sector = b.Key,
+                        cantidad = b.Count()
+                    };
+
+            return Json(d.ToList(), JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion
         public ActionResult Menu()
         {
             
             return View();
         }
         // GET: Reportes
+        [Authorize]
         public ActionResult Index(string tipoSituacion, string sector, string localidad)
         {
             #region CreacionVariables
@@ -149,7 +183,7 @@ namespace AwareswebApp.Controllers
                          
             return View(listaReportes);
         }
-
+        [Authorize]
         public ActionResult ZonasMasAfectadas(string sector)
         {
             // Creo una lista1, lista2 para guardar cadenas

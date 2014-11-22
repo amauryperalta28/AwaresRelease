@@ -19,6 +19,7 @@ namespace AwareswebApp.Controllers
             return View();
         }
         // GET: Colaboradores
+        [Authorize]
         public ActionResult Index()
         {
             return View(db.Colaboradores.ToList());

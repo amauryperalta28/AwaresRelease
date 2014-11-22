@@ -12,9 +12,10 @@
 
         </div>
 
-        <h2>Lista de Reportes</h2>
+        <h2>Reportes Por Situaci&oacute;n/Sector/Localidad</h2>
 
-        <div id="map_canvas" style="width: 880px; height: 560px;border-style:solid;border-width:5px;border-color:ActiveBorder">  </div>
+        <br />
+        <div id="map_canvas" style="width: 780px; height: 460px;border-style:solid;border-width:5px;border-color:ActiveBorder">  </div>
 
         @*<p>
             @Html.ActionLink("Create New", "Create")
@@ -22,15 +23,19 @@
 
         @using (Html.BeginForm())
         {
+
             <p>
                 Situación:  @Html.DropDownList("tipoSituacion", "All")
                 Sector: @Html.DropDownList("sector", "All")
-                Localidad: @Html.DropDownList("localidad", "All")
+        
                 
-                <input type="submit" class="btn btn-default dropdown-toggle" value="Filter" />
-
-
             </p>
+    <p>Localidad: @Html.DropDownList("localidad", "All")
+        <input type="submit" class="btn btn-default dropdown-toggle" value="Filter" />
+        </p>
+
+
+
         }
 
 

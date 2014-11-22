@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<AwareswebApp.Models.HistDetConsumoViewModel>
 @{
-    ViewBag.Title = "historialConsumosDetPorMes";
+    ViewBag.Title = "ConsumosDetPorMes";
 }
 
 
@@ -10,9 +10,8 @@
 
         </div>
 
-        <h2>Consumos</h2>
-
-       
+        <h3>Consumos Detallados Por Mes</h3>
+        <br />
 
         @using (Html.BeginForm())
         {
@@ -41,14 +40,14 @@
                <tr>
                    <td>
 
-                       @item.username
+                       @item.UsernameColaborador
                     </td>
                     <td>
 
                         @item.month
                     </td>
                     <td>
-                        @item.consumo
+                        @item.lectura
                     </td>
                     
                 </tr>

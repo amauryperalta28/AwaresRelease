@@ -48,7 +48,9 @@ Released   : 20120624
                 <h1><a href="@Url.Action("Index","Home")">Awares</a></h1>
             </div>
             <div id="slogan">
-                <h2>Forma Parte de la soluci&oacuten</h2>
+                <h2>
+                    <em>Forma Parte de la <strong> soluci&oacuten</strong>, no del problema.</em>
+                </h2>
             </div>
         </div>
         <div id="menu">
@@ -59,7 +61,8 @@ Released   : 20120624
                         <li>
                             <span>Consumos<b></b></span>
                             <ul>
-                                <li><a href="@Url.Action("Menu","Consumos")">Historial</a></li>
+                                <li><a href="@Url.Action("historialConsumosGeneral", "Consumos")">Historial General </a></li>
+                                <li><a href="@Url.Action("historialConsumosDetPorMes", "Consumos")">Historial Detallado Por Mes</a></li>
                             </ul>
                         </li>
                         <li>
@@ -74,7 +77,9 @@ Released   : 20120624
                             <ul>
                                 <li><a href="@Url.Action("Index", "Reportes")">Casos</a></li>
                                 <li><a href="@Url.Action("ZonasMasAfectadas", "Reportes")">Zonas m&aacutes Afectadas</a></li>
-                                <li><a href="#">Estad&iacutesticas</a></li>
+                                <li><a href="@Url.Action("ZonasMasAfectadas", "Reportes")">Gr&aacute;ficas de Porcentajes Reportes Por Situaci&oacute;n</a></li>
+                                <li><a href="@Url.Action("ZonasMasAfectadas", "Reportes")">Gr&aacute;ficas de Porcentajes Reportes Por Sector</a></li>
+                                
                               
                             </ul>
                         </li>

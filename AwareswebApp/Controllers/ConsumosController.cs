@@ -193,7 +193,7 @@ namespace AwareswebApp.Controllers
         // GET: Consumos
 
         // Historial de Consumos General
-
+        [Authorize]
         public ActionResult historialConsumosGeneral(string colabFilter, string monthFilter, string yearFilter)
         {
             string[] month = { " 1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" };
@@ -228,7 +228,7 @@ namespace AwareswebApp.Controllers
         }
 
         // Historial de Consumos Detallado por mes
-
+        [Authorize]
         public ActionResult historialConsumosDetPorMes(string colabFilter, string yearFilter)
         {
             // Creo una lista para guardar colaboradores
