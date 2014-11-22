@@ -38,4 +38,25 @@ namespace AwareswebApp.Models
     
     }
 
+
+    /**
+     * Modelo de vista para representar datos estadistica cantidad de reportes por tipo situacion
+     */ 
+    public class rePortesPorTipoSituacion
+    {
+        public string situacion;
+        public int cantidad;
+    
+    }
+
+    /**
+   * Modelo de vista para representar datos estadistica cantidad de reportes por tipo situacion
+   */
+    public class rePortesPorSector
+    {
+        public string sector;
+        public int cantidad;
+
+    }
+
 }

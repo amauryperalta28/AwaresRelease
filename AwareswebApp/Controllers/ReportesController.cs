@@ -27,11 +27,7 @@ namespace AwareswebApp.Controllers
 
         static string baseUri = "http://maps.googleapis.com/maps/api/geocode/xml?latlng={0},{1}&sensor=false";
 
-        public ActionResult BuildChart()
-        {
-
-            return View();
-        }
+        #region Estadisticas
 
         public ActionResult showChart()
         {
@@ -39,10 +35,42 @@ namespace AwareswebApp.Controllers
         }
         public ActionResult showChart2()
         {
+            // Porciento de fugas, averias, Tuberia rota, etc
+            Double totalReport = (from a in db.Reportes
+                              select a).Count();
+
+            var d = (from a in db.Reportes
+                    group a by a.situacion into b
+                    select new rePortesPorTipoSituacion {situacion = b.Key ,
+                                cantidad = (b.Count())           
+                    });
+                    
             var data = from a in db.Reportes
                        select a;
-            return Json(data.ToList().FirstOrDefault(), JsonRequestBehavior.AllowGet);
+            return Json(d.ToList(), JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult Est_PorSector()
+        {
+            return View();
+        }
+
+        public ActionResult Est_PorSectorData()
+        {
+            var d = from a in db.Reportes
+                    group a by a.sector into b
+                    select new rePortesPorSector
+                    {
+                        sector = b.Key,
+                        cantidad = b.Count()
+                    };
+
+            return Json(d.ToList(),JsonRequestBehavior.AllowGet);
+        }
+
+
+
+        #endregion
         public ActionResult Menu()
         {
             

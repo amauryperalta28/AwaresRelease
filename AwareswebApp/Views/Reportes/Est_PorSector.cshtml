@@ -1,26 +1,28 @@
 ﻿
 @{
-    ViewBag.Title = "showChart";
+    ViewBag.Title = "Est_PorSector";
 }
 
+
+
 <div id="page">
-        <div id="content">
-            <div class="box">
+    <div id="content">
+        <div class="box">
 
-            </div>
-            <h2>Estadistica</h2>
-            <div id="chart_div"></div>
-
-            <br class="clearfix" />
         </div>
+        <h2>Estadistica</h2>
+        <div id="chart_div" style="width: 900px; height: 500px;"></div>
 
         <br class="clearfix" />
     </div>
 
+    <br class="clearfix" />
+</div>
+
 
 @section scripts{
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<script type="text/javascript">
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
 
     // Load the Visualization API and the piechart package.
     google.load('visualization', '1.0', { 'packages': ['corechart'] });
@@ -29,7 +31,7 @@
     //google.setOnLoadCallback(drawChart);
     var datos;
     $.ajax({
-        url: '@Url.Action("showchart2","reportes")',
+        url: '@Url.Action("Est_PorSectorData", "reportes")',
         type: 'GET',
         success: function (result) {
             if (result) {
@@ -48,20 +50,21 @@
 
         // Create the data table.
         var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Situacion');
+        data.addColumn('string', 'Sector');
         data.addColumn('number', 'Cantidad');
+        
         var contador = 0
 
         datos.forEach(function (entry) {
             data.addRows(6);
-            data.setCell(contador, 0, entry.situacion);
+            data.setCell(contador, 0, entry.sector);
             data.setCell(contador, 1, entry.cantidad);
 
             contador = contador + 1;
 
         });
 
-       
+
         //data.addRows(6);
         //data.setCell(0,0,'Onions');
         //data.setCell(0, 1, 1);
@@ -69,7 +72,7 @@
         //data.addRows(6);
         //data.setCell(1, 0, 'Olives');
         //data.setCell(1, 1, 2);
-        
+
         //data.addRows([
         //  [datos.situacion, datos.cantidad],
         //  ['Onions', 1],
@@ -81,15 +84,15 @@
         // Set chart options
         var options = {
             'title': 'Cantidad de Reportes por situacion',
-            'width': 400,
-            'height': 300,
-            is3D:true
+            vAxis: {
+                title: 'Year', titleTextStyle: { color: 'red' }
+            }
         };
 
         // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        var chart = new google.visualization.Chart(document.getElementById('chart_div'));
         chart.draw(data, options);
     }
 
-</script>
+    </script>
 }

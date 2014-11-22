@@ -131,7 +131,9 @@ namespace AwareswebApp.Controllers
         public ActionResult DeleteRoleForUser(string UserName, string RoleName)
         {
             var account = new AccountController();
+            
             ApplicationUser user = context.Users.Where(u => u.UserName.Equals(UserName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+           // ApplicationUserManager appMan = new ApplicationUserManager(user);
 
             if (account.UserManager.IsInRole(user.Id, RoleName))
             {

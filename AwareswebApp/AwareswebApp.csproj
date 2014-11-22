@@ -282,6 +282,7 @@
     <Content Include="Views\Consumos\historialConsumosDetPorMes.cshtml" />
     <Content Include="Views\Account\RegisterCustom.cshtml" />
     <Content Include="Views\Reportes\showChart.cshtml" />
+    <Content Include="Views\Reportes\Est_PorSector.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
