@@ -108,7 +108,7 @@ namespace AwareswebApp.Controllers
         }
         
         // GET: Consumos
-        public void Receive(string userNameColaborador, string lecturaConsumo)
+        public void Rec(string userNameColaborador, string lecturaConsumo)
         {
             // Se recibe las lecturas
             String l = lecturaConsumo;
@@ -125,8 +125,17 @@ namespace AwareswebApp.Controllers
                 string colab = datos[1];
                 double lectura = Convert.ToDouble( datos[0]);
 
-                Consumo c = new Consumo(colab, lectura);
-                db.Consumos.Add(c);
+                // Se busca verifica si el colaborador existe
+                int colabExits = (from a in db.Colaboradores
+                                 where a.nombreUsuario == colab
+                                 select a).Count();
+
+                if (colabExits == 1)
+                {
+                    Consumo c = new Consumo(colab, lectura);
+                    db.Consumos.Add(c);
+                }
+                
                 
             }
             

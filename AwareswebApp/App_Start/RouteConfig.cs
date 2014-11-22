@@ -22,7 +22,7 @@ namespace AwareswebApp
             routes.MapRoute(
                 name: "RecepcionConsumo",
                 url: "{controller}/{action}/{userNameColaborador}/{lecturaConsumo}/{tipoConsumo}/{Fecha}",
-                 defaults: new { controller = "Consumos", action = "Receive" }
+                 defaults: new { controller = "Consumos", action = "Rec" }
             );
             routes.MapRoute(
                 name: "CreacionColab",
