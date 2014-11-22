@@ -165,9 +165,23 @@ namespace AwareswebApp.Controllers
             //Verifico si el usuario y contrasena son validos
             if (usuario == 1)
             {
-                var rep = from a in db.Consumos
-                          where a.UsernameColaborador == userName
-                          select a;
+                //var rep = from a in db.Consumos
+                //          where a.UsernameColaborador == userName
+                //          select a;
+
+                var consumos2 = (from a in db.Consumos
+                                 where a.fechaCreacion.Year == 2014
+                                 group a by new { a.UsernameColaborador, a.fechaCreacion.Month, a.fechaCreacion.Year } into b
+                                 select new HistDetConsumoViewModel
+                                 {
+                                     UsernameColaborador = b.Key.UsernameColaborador,
+                                     month = b.Key.Month,
+                                     year = b.Key.Year,
+                                     fechaCreacion = b.Key.Month.ToString(),
+                                     consumo = b.Sum(a => a.lectura)
+                                 });
+                var rep = consumos2.ToList();
+
                 return Json(rep, JsonRequestBehavior.AllowGet);
             }
 
@@ -245,7 +259,7 @@ namespace AwareswebApp.Controllers
                                  group a by new { a.UsernameColaborador, a.fechaCreacion.Month, a.fechaCreacion.Year } into b
                                  select new HistDetConsumoViewModel
                                  {
-                                     username = b.Key.UsernameColaborador,
+                                     UsernameColaborador = b.Key.UsernameColaborador,
                                      month = b.Key.Month,
                                      year = b.Key.Year,
                                      consumo = b.Sum(a => a.lectura)
@@ -259,7 +273,7 @@ namespace AwareswebApp.Controllers
                                  group a by new { a.UsernameColaborador, a.fechaCreacion.Month, a.fechaCreacion.Year } into b
                                  select new HistDetConsumoViewModel
                                  {
-                                     username = b.Key.UsernameColaborador,
+                                     UsernameColaborador = b.Key.UsernameColaborador,
                                      month = b.Key.Month,
                                      year = b.Key.Year,
                                      consumo = b.Sum(a => a.lectura)

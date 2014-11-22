@@ -25,7 +25,7 @@ namespace AwareswebApp.Models
     public class HistDetConsumoViewModel
     {
         // Este es el nombre del usuario
-        public string username;
+        public string UsernameColaborador;
 
         // Este es el mes del consumo
         public int month;
@@ -35,6 +35,8 @@ namespace AwareswebApp.Models
 
         // Este es el consuno del usuario
         public double consumo;
+
+        public string fechaCreacion;
     
     }
 
