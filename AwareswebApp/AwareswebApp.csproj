@@ -177,7 +177,6 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AwaresViewModels.cs" />
-    <Compile Include="Models\Business.cs" />
     <Compile Include="Models\Colaborador.cs" />
     <Compile Include="Models\Consumo.cs" />
     <Compile Include="Models\DbModels.cs" />

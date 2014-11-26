@@ -113,9 +113,9 @@ namespace AwareswebApp.Models
     public class LoginViewModel
     {
         [Required]
-       // [EmailAddress]
-        [Display(Name = "Usuario")]
-        public string Usuario { get; set; }
+        [EmailAddress]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
