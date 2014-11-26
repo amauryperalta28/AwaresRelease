@@ -24,6 +24,7 @@ namespace AwareswebApp.Models
             lectura = lectura_Consumo;
             fechaCreacion = DateTime.Now;
             tipoConsumo = "Mensual";
+            
 
         }
         public Consumo()

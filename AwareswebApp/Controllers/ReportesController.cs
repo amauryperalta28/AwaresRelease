@@ -23,7 +23,7 @@ namespace AwareswebApp.Controllers
         private string sector;
         private String calle;
         public List<string> atributos = new List<string>();
-        
+
 
         static string baseUri = "http://maps.googleapis.com/maps/api/geocode/xml?latlng={0},{1}&sensor=false";
 
@@ -34,16 +34,17 @@ namespace AwareswebApp.Controllers
         }
 
         #region estadisticas
+
         public ActionResult showChart()
         {
+            
             return View();
         }
+       
         public ActionResult showChart2()
         {
+           
             // Porciento de fugas, averias, Tuberia rota, etc
-            Double totalReport = (from a in db.Reportes
-                                  select a).Count();
-
             var d = (from a in db.Reportes
                      group a by a.situacion into b
                      select new rePortesPorTipoSituacion
@@ -52,18 +53,45 @@ namespace AwareswebApp.Controllers
                          cantidad = (b.Count())
                      });
 
-            var data = from a in db.Reportes
-                       select a;
             return Json(d.ToList(), JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult Est_PorSector()
+        public ActionResult Est_PorSector(string yearFilter, string monthFilter, string tipoSituacion)
         {
+            string[] month = { " 1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" };
+
+            // Creo una lista para guardar colaboradores
+           
+
+            var monthLst = new List<string>();
+            var yearLst = new List<string>();
+            var RpLst = new List<string>();
+            //Hago query en la tabla consumos en donde obtengo los usuarios que han realizado consumos y los guardo en una variable
+            
+            var yearQry = from a in db.Reportes
+                          select a.fechaCreacion.Year.ToString();
+
+            var RpQry = from a in db.Reportes
+                        select a.situacion;
+
+            // Los anios en los que se han realizado consumos en el dropdownlist
+            yearLst.AddRange(yearQry.Distinct());
+            ViewBag.yearFilter = new SelectList(yearLst);
+
+            //Agrego los meses al dropdownLst
+            monthLst.AddRange(month);
+            ViewBag.monthFilter = new SelectList(monthLst);
+
+            RpLst.AddRange(RpQry.Distinct());
+            ViewBag.tipoSituacion = new SelectList(RpLst);
             return View();
         }
 
+        // Obtiene la Cantidad de reportes por sector, filtrado por mes y año y situacion
         public ActionResult Est_PorSectorData()
         {
+
+
             var d = from a in db.Reportes
                     group a by a.sector into b
                     select new rePortesPorSector
@@ -71,6 +99,11 @@ namespace AwareswebApp.Controllers
                         sector = b.Key,
                         cantidad = b.Count()
                     };
+
+          //  Business obj = new Business();
+          //var d=  obj.getReportMonthYearSituation(_mes, _anio, _situacion);
+
+          
 
             return Json(d.ToList(), JsonRequestBehavior.AllowGet);
         }
@@ -85,6 +118,8 @@ namespace AwareswebApp.Controllers
         [Authorize]
         public ActionResult Index(string tipoSituacion, string sector, string localidad)
         {
+            Business obj = new Business();
+         
             #region CreacionVariables
             // Creo una lista para guardar los tipos de situaciones reportadas
             var tipoSitLst = new List<string>();
