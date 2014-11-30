@@ -9,7 +9,18 @@
         </div>
         <h2>Porcentaje de Reportes Por Situaci&oacute;n</h2>
         <div id="chart_div"></div>
-
+        @using (Html.BeginForm())
+        {
+            <p>
+                Sector: @Html.DropDownList("sectorFilter", "All")
+                <br />
+                Mes1: @Html.DropDownList("monthFilter1", "All")
+                Mes2: @Html.DropDownList("monthFilter2", "All")
+                Year1: @Html.DropDownList("yearFilter1")
+                Year2: @Html.DropDownList("yearFilter2")
+                <input type="submit" class="btn btn-default dropdown-toggle" value="Filter" />
+            </p>
+        }
         <br class="clearfix" />
     </div>
 

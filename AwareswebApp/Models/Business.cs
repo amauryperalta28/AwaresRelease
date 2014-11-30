@@ -23,7 +23,7 @@ namespace AwareswebApp.Models
             int anio = Convert.ToInt32(year);
             
             //Si me indicaron el mes
-            if (!String.IsNullOrEmpty(month))
+            if (!month.Equals("0"))
             {
                 //Si me indicaron la situacion
                 if (!String.IsNullOrEmpty(situacion))
@@ -53,6 +53,20 @@ namespace AwareswebApp.Models
                               };
                     return res.ToList();
                 }
+            }
+            else if(!String.IsNullOrEmpty(situacion))
+            {
+                var res = from a in db.Reportes
+                          where a.fechaCreacion.Year == anio &&
+                                a.situacion == situacion
+                          group a by a.sector into b
+                          select new rePortesPorSector
+                          {
+                              sector = b.Key,
+                              cantidad = b.Count()
+                          };
+                return res.ToList();
+
             }
             else
             {
@@ -189,5 +203,106 @@ namespace AwareswebApp.Models
             }
 
         }
+
+        /**
+         * Obtienen el porcentaje almacenado de cada tipo de reporte, filtrado por rangos de mes,
+         * rangos de año, y sector.
+         * @param m1         Este es el limite inferior del rango de mes
+         * @param m2         Este es el limite superior del rango de mes
+         * @param y1         Este es el limite inferior del rango de año
+         * @param y2         Este es el limite superior del rango de año
+         * @param sector     Este es el sector
+         * @return           Una lista de porcentajes de reportes
+         */
+         public List<rePortesPorTipoSituacion> getReportPercentMonthYearSector(string m1, string m2, string y1, string y2, string sector)
+         { 
+             //Obtengo los valores indicados
+             int mes1 = Convert.ToInt32(m1);
+             int mes2 = Convert.ToInt32(m2);
+             int year1 = Convert.ToInt32(y1);
+             int year2 = Convert.ToInt32(y2);
+
+             // Si especifican el sector y el rango de mes
+             if( (!m1.Equals("0") && !m2.Equals("0")) )
+             {
+                 if(!string.IsNullOrEmpty(sector))
+                 {
+                     var res = from a in db.Reportes
+                               where a.fechaCreacion.Year >= year1 &&
+                                     a.fechaCreacion.Year <= year2 &&
+                                     a.fechaCreacion.Month >= mes1 &&
+                                     a.fechaCreacion.Month <= mes2 &&
+                                     a.sector == sector
+                               group a by a.situacion into b
+                               select new rePortesPorTipoSituacion
+                               {
+                                   situacion = b.Key,
+                                   cantidad = b.Count()
+                               };
+                     return res.ToList();
+                 }
+                 else
+                 {
+                     var res = from a in db.Reportes
+                               where a.fechaCreacion.Year >= year1 &&
+                                     a.fechaCreacion.Year <= year2 &&
+                                     a.fechaCreacion.Month >= mes1 &&
+                                     a.fechaCreacion.Month <= mes2 
+                               group a by a.situacion into b
+                               select new rePortesPorTipoSituacion
+                               {
+                                   situacion = b.Key,
+                                   cantidad = b.Count()
+                               };
+                     return res.ToList();
+
+                 }
+                 
+             }
+             // Si solo me especifican el sector
+             else if(!string.IsNullOrEmpty(sector))
+             {
+                 var res = from a in db.Reportes
+                           where a.fechaCreacion.Year >= year1 &&
+                                 a.fechaCreacion.Year <= year2 &&
+                                 a.sector == sector
+                           group a by a.situacion into b
+                           select new rePortesPorTipoSituacion
+                           {
+                               situacion = b.Key,
+                               cantidad = b.Count()
+                           };
+                 return res.ToList();
+
+             }
+                 // Solo se indicaron los años
+             else if (!m1.Equals("0") || !m2.Equals("0"))
+             {
+                 var res = from a in db.Reportes
+                           where a.fechaCreacion.Year >= 0 &&
+                                 a.fechaCreacion.Year <= 0 
+                           group a by a.situacion into b
+                           select new rePortesPorTipoSituacion
+                           {
+                               situacion = b.Key,
+                               cantidad = b.Count()
+                           };
+                 return res.ToList();              
+
+             }
+             else 
+             {
+                 var res = from a in db.Reportes
+                           where a.fechaCreacion.Year >= year1 &&
+                                 a.fechaCreacion.Year <= year2
+                           group a by a.situacion into b
+                           select new rePortesPorTipoSituacion
+                           {
+                               situacion = b.Key,
+                               cantidad = b.Count()
+                           };
+                 return res.ToList(); 
+             }
+         }
     }
 }

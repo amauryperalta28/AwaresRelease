@@ -35,23 +35,53 @@ namespace AwareswebApp.Controllers
 
         #region estadisticas
 
-        public ActionResult showChart()
+        public ActionResult showChart(string monthFilter1, string monthFilter2, string yearFilter1, string yearFilter2, string sectorFilter)
         {
             
+            getParamsEst(monthFilter1, monthFilter2, yearFilter1, yearFilter2, sectorFilter);
+            // Se rellenan los dropdownlist con los elementos correspondientes
+            string[] month = { " 1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" };
+
+            var monthLst = new List<string>();
+            var yearLst = new List<string>();
+            var SectorLst = new List<string>();
+            //Hago query en la tabla consumos en donde obtengo los usuarios que han realizado consumos y los guardo en una variable
+
+            var yearQry = from a in db.Reportes
+                          select a.fechaCreacion.Year.ToString();
+
+            var SectorQry = from a in db.Reportes
+                        select a.sector;
+
+            // Los anios en los que se han realizado consumos en el dropdownlist
+            yearLst.AddRange(yearQry.Distinct());
+            ViewBag.yearFilter1 = new SelectList(yearLst);
+            ViewBag.yearFilter2 = new SelectList(yearLst);
+
+            //Agrego los meses al dropdownLst
+            monthLst.AddRange(month);
+            ViewBag.monthFilter1 = new SelectList(monthLst);
+            ViewBag.monthFilter2 = new SelectList(monthLst);
+
+            SectorLst.AddRange(SectorQry.Distinct());
+            ViewBag.sectorFilter = new SelectList(SectorLst);
+
             return View();
         }
        
         public ActionResult showChart2()
         {
+           // Se obtiene los parametros guardados en el session collection
+            string m1 = Session["monthFilter1"].ToString();
+            string m2 = Session["monthFilter2"].ToString();
+            string y1 = Session["yearFilter1"].ToString();
+            string y2 = Session["yearFilter2"].ToString();
+            string sector = Session["sectorFilter"].ToString();
+            Session.Clear();
+            Business obj = new Business();
+
+            var d = obj.getReportPercentMonthYearSector(m1, m2, y1, y2, sector);
            
-            // Porciento de fugas, averias, Tuberia rota, etc
-            var d = (from a in db.Reportes
-                     group a by a.situacion into b
-                     select new rePortesPorTipoSituacion
-                     {
-                         situacion = b.Key,
-                         cantidad = (b.Count())
-                     });
 
             return Json(d.ToList(), JsonRequestBehavior.AllowGet);
         }
@@ -60,14 +90,31 @@ namespace AwareswebApp.Controllers
         {
             string[] month = { " 1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" };
 
-            // Creo una lista para guardar colaboradores
-           
+            if (!String.IsNullOrEmpty(monthFilter) && !String.IsNullOrEmpty(tipoSituacion))
+            {
+                Session["p1"] = yearFilter;
+                Session["p2"] = monthFilter;
+                Session["p3"] = tipoSituacion;
 
+
+            }
+            else if(!String.IsNullOrEmpty(monthFilter))
+            {
+                Session["p1"] = yearFilter;
+                Session["p2"] = monthFilter;
+            }
+            else if (!String.IsNullOrEmpty(yearFilter))
+            {
+                Session["p1"] = yearFilter;
+            }
+           
+            // Creo una lista para guardar colaboradores
+            
             var monthLst = new List<string>();
             var yearLst = new List<string>();
             var RpLst = new List<string>();
             //Hago query en la tabla consumos en donde obtengo los usuarios que han realizado consumos y los guardo en una variable
-            
+
             var yearQry = from a in db.Reportes
                           select a.fechaCreacion.Year.ToString();
 
@@ -90,25 +137,107 @@ namespace AwareswebApp.Controllers
         // Obtiene la Cantidad de reportes por sector, filtrado por mes y año y situacion
         public ActionResult Est_PorSectorData()
         {
+            int param = Session.Count;
+            string _mes = "0";
+            string _anio = "0";
+            string _situacion = "";
 
+            if (param == 3)
+            {
+                 _anio = Session["p1"].ToString();
+                 _mes = Session["p2"].ToString();
+                _situacion = Session["p3"].ToString();
+            
+            }
+            else if (param == 2)
+            {
+                _anio = Session["p1"].ToString();
+                _mes = Session["p2"].ToString();
+            }
+            else if(param == 1)
+            {
+                _anio = Session["p1"].ToString();
+            }
+            Session.Clear();
+            
 
-            var d = from a in db.Reportes
-                    group a by a.sector into b
-                    select new rePortesPorSector
-                    {
-                        sector = b.Key,
-                        cantidad = b.Count()
-                    };
+            //var d = from a in db.Reportes
+            //        group a by a.sector into b
+            //        select new rePortesPorSector
+            //        {
+            //            sector = b.Key,
+            //            cantidad = b.Count()
+            //        };
 
-          //  Business obj = new Business();
-          //var d=  obj.getReportMonthYearSituation(_mes, _anio, _situacion);
+            Business obj = new Business();
+            var d = obj.getReportMonthYearSituation(_mes, _anio, _situacion);
 
           
 
             return Json(d.ToList(), JsonRequestBehavior.AllowGet);
         }
 
+        public void getParamsEst(string monthFilter1, string monthFilter2, string yearFilter1, string yearFilter2, string sectorFilter)
+        {
+            if (!String.IsNullOrEmpty(monthFilter1) && !String.IsNullOrEmpty(monthFilter2) )
+            {
+                if(!String.IsNullOrEmpty(sectorFilter))
+                {
+                    Session["monthFilter1"] = monthFilter1;
+                    Session["monthFilter2"] = monthFilter2;
+                    Session["sectorFilter"] = sectorFilter;
+                    Session["yearFilter1"] = yearFilter1;
+                    Session["yearFilter2"] = yearFilter2;
+                }
+                else
+                {
+                    Session["monthFilter1"] = monthFilter1;
+                    Session["monthFilter2"] = monthFilter2;
+                    Session["sectorFilter"] = "";
+                    Session["yearFilter1"] = yearFilter1;
+                    Session["yearFilter2"] = yearFilter2;
+                }
+                
+            }
+            else if (!String.IsNullOrEmpty(sectorFilter) && ( !String.IsNullOrEmpty(monthFilter1) || !String.IsNullOrEmpty(monthFilter2)))
+            {
+                Session["monthFilter1"] = "0";
+                Session["monthFilter2"] = "0";
+                Session["sectorFilter"] = sectorFilter;
+                Session["yearFilter1"] = yearFilter1;
+                Session["yearFilter2"] = yearFilter2;
+            }
+            else if (!String.IsNullOrEmpty(yearFilter1) )
+            {
+                if ((!String.IsNullOrEmpty(monthFilter1) || !String.IsNullOrEmpty(monthFilter2)))
+                {
+                    Session["monthFilter1"] = "0";
+                    Session["monthFilter2"] = "0";
+                    Session["sectorFilter"] = "";
+                    Session["yearFilter1"] = "0";
+                    Session["yearFilter2"] = "0";
+                }
+                else
+                {
+                    Session["monthFilter1"] = "0";
+                    Session["monthFilter2"] = "0";
+                    Session["sectorFilter"] = "";
+                    Session["yearFilter1"] = yearFilter1;
+                    Session["yearFilter2"] = yearFilter2;
+                }
+                
+            }
+            else
+            {
+                Session["monthFilter1"] = "0";
+                Session["monthFilter2"] = "0";
+                Session["sectorFilter"] = "";
+                Session["yearFilter1"] = "0";
+                Session["yearFilter2"] = "0";
+            }
+        }
         #endregion
+
         public ActionResult Menu()
         {
             
@@ -215,7 +344,7 @@ namespace AwareswebApp.Controllers
             ViewBag.Longitud = -69.8746229;
             ViewBag.coordenadas = listaReportes;
 
-                         
+            
             return View(listaReportes);
         }
         [Authorize]
