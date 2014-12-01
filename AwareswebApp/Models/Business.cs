@@ -278,31 +278,107 @@ namespace AwareswebApp.Models
                  // Solo se indicaron los años
              else if (!m1.Equals("0") || !m2.Equals("0"))
              {
-                 var res = from a in db.Reportes
-                           where a.fechaCreacion.Year >= 0 &&
-                                 a.fechaCreacion.Year <= 0 
-                           group a by a.situacion into b
-                           select new rePortesPorTipoSituacion
-                           {
-                               situacion = b.Key,
-                               cantidad = b.Count()
-                           };
-                 return res.ToList();              
+                 
+                 return null;              
 
              }
              else 
              {
-                 var res = from a in db.Reportes
-                           where a.fechaCreacion.Year >= year1 &&
-                                 a.fechaCreacion.Year <= year2
-                           group a by a.situacion into b
-                           select new rePortesPorTipoSituacion
-                           {
-                               situacion = b.Key,
-                               cantidad = b.Count()
-                           };
-                 return res.ToList(); 
+                 if(!string.IsNullOrEmpty(sector))
+                 {
+                     var res = from a in db.Reportes
+                               where a.fechaCreacion.Year >= year1 &&
+                                     a.fechaCreacion.Year <= year2 &&
+                                     a.sector == sector
+                               group a by a.situacion into b
+                               select new rePortesPorTipoSituacion
+                               {
+                                   situacion = b.Key,
+                                   cantidad = b.Count()
+                               };
+                     return res.ToList(); 
+
+                 }
+                 else
+                 {
+                     var res = from a in db.Reportes
+                               where a.fechaCreacion.Year >= year1 &&
+                                     a.fechaCreacion.Year <= year2
+                               group a by a.situacion into b
+                               select new rePortesPorTipoSituacion
+                               {
+                                   situacion = b.Key,
+                                   cantidad = b.Count()
+                               };
+                     return res.ToList(); 
+                 }
+                 
              }
          }
+
+        /**
+         * Obtiene el porcentaje de Reportes que fueron resueltos y los que no fueron resueltos
+         * @param m1         Este es el limite inferior del rango de mes
+         * @param m2         Este es el limite superior del rango de mes
+         * @param y1         Este es el limite inferior del rango de año
+         * @param y2         Este es el limite superior del rango de año
+         * @return           Una lista de porcentajes de situaciones resueltas y no resueltas
+         */
+        public List<reportesPorEstatus> getReportStatus(string m1, string m2, string y1, string y2)
+         {
+             //Obtengo los valores indicados
+             int mes1 = Convert.ToInt32(m1);
+             int mes2 = Convert.ToInt32(m2);
+             int year1 = Convert.ToInt32(y1);
+             int year2 = Convert.ToInt32(y2);
+             TiposEstatus st1 = new TiposEstatus { id = "1", descrip = "No resuelto" };
+             TiposEstatus st2 = new TiposEstatus { id = "2", descrip = "Resuelto" };
+             List<TiposEstatus> status = new List<TiposEstatus>{st1,st2};
+             
+             status.Add(st1);
+             status.Add(st2);
+             // Si especifican el sector y el rango de mes
+             if ((!m1.Equals("0") && !m2.Equals("0")))
+             {
+                 var res = from a in db.Reportes
+                           where a.fechaCorreccion.Year >= year1 &&
+                                 a.fechaCorreccion.Year <= year2 &&
+                                 a.fechaCorreccion.Month >= mes1 &&
+                                 a.fechaCorreccion.Month <= mes2 
+                           group a by a.estatus into b
+                           select new reportesPorEstatus
+                           {
+                               status = b.Key,
+                               cantidad = b.Count()
+                           };
+                 return res.ToList();
+
+
+             }
+             else if ((!m1.Equals("0") || !m2.Equals("0")))
+             {
+                 
+                 return null;
+
+             }
+             else
+             {
+                 var res = from a in db.Reportes
+                           where a.fechaCorreccion.Year >= year1 &&
+                                 a.fechaCorreccion.Year <= year2 
+                           group a by a.estatus into b
+                           select new reportesPorEstatus
+                           {
+                               status = b.Key,
+                               cantidad = b.Count()
+                           };
+                 return res.ToList();
+
+             }
+
+
+         }
+
+
     }
 }

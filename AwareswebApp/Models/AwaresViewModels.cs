@@ -61,4 +61,13 @@ namespace AwareswebApp.Models
 
     }
 
+    /**
+     * Modelo de vista para representar datos estadisticos de cantidad de reportes resueltos
+     */ 
+    public class reportesPorEstatus
+    {
+        public string status;
+        public int cantidad;
+    }
+
 }

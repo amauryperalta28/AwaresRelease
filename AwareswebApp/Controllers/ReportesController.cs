@@ -177,6 +177,46 @@ namespace AwareswebApp.Controllers
             return Json(d.ToList(), JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult Est_porEstatus(string monthFilter1, string monthFilter2, string yearFilter1, string yearFilter2)
+        {
+            getParamsEst(monthFilter1, monthFilter2, yearFilter1, yearFilter2, "");
+            // Se rellenan los dropdownlist con los elementos correspondientes
+            string[] month = { " 1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" };
+
+            var monthLst = new List<string>();
+            var yearLst = new List<string>();
+            //Hago query en la tabla consumos en donde obtengo los usuarios que han realizado consumos y los guardo en una variable
+
+            var yearQry = from a in db.Reportes
+                          select a.fechaCreacion.Year.ToString();
+
+            // Los anios en los que se han realizado consumos en el dropdownlist
+            yearLst.AddRange(yearQry.Distinct());
+            ViewBag.yearFilter1 = new SelectList(yearLst);
+            ViewBag.yearFilter2 = new SelectList(yearLst);
+
+            //Agrego los meses al dropdownLst
+            monthLst.AddRange(month);
+            ViewBag.monthFilter1 = new SelectList(monthLst);
+            ViewBag.monthFilter2 = new SelectList(monthLst);
+
+            return View();
+        }
+
+        public ActionResult Est_porEstatusData()
+        {
+            // Se obtiene los parametros guardados en el session collection
+            string m1 = Session["monthFilter1"].ToString();
+            string m2 = Session["monthFilter2"].ToString();
+            string y1 = Session["yearFilter1"].ToString();
+            string y2 = Session["yearFilter2"].ToString();
+            Session.Clear();
+            Business obj = new Business();
+
+            var d = obj.getReportStatus(m1, m2, y1, y2);
+            return Json(d.ToList(), JsonRequestBehavior.AllowGet);
+        }
+
         public void getParamsEst(string monthFilter1, string monthFilter2, string yearFilter1, string yearFilter2, string sectorFilter)
         {
             if (!String.IsNullOrEmpty(monthFilter1) && !String.IsNullOrEmpty(monthFilter2) )
@@ -219,11 +259,23 @@ namespace AwareswebApp.Controllers
                 }
                 else
                 {
-                    Session["monthFilter1"] = "0";
-                    Session["monthFilter2"] = "0";
-                    Session["sectorFilter"] = "";
-                    Session["yearFilter1"] = yearFilter1;
-                    Session["yearFilter2"] = yearFilter2;
+                    if(!String.IsNullOrEmpty(sectorFilter))
+                    {
+                        Session["monthFilter1"] = "0";
+                        Session["monthFilter2"] = "0";
+                        Session["sectorFilter"] = sectorFilter;
+                        Session["yearFilter1"] = yearFilter1;
+                        Session["yearFilter2"] = yearFilter2;
+                    }
+                    else
+                    {
+                        Session["monthFilter1"] = "0";
+                        Session["monthFilter2"] = "0";
+                        Session["sectorFilter"] = "";
+                        Session["yearFilter1"] = yearFilter1;
+                        Session["yearFilter2"] = yearFilter2;
+                    }
+                    
                 }
                 
             }
@@ -343,7 +395,7 @@ namespace AwareswebApp.Controllers
             ViewBag.Latitud = 18.523471;
             ViewBag.Longitud = -69.8746229;
             ViewBag.coordenadas = listaReportes;
-
+            
             
             return View(listaReportes);
         }
