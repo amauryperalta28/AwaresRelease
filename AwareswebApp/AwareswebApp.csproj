@@ -167,12 +167,13 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ReportesController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
+    <Compile Include="Controllers\RutasController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201411051757100_Initial.cs" />
-    <Compile Include="Migrations\201411051757100_Initial.Designer.cs">
-      <DependentUpon>201411051757100_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201412031432514_InitMigration.cs" />
+    <Compile Include="Migrations\201412031432514_InitMigration.Designer.cs">
+      <DependentUpon>201412031432514_InitMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -183,7 +184,8 @@
     <Compile Include="Models\DbModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Reporte.cs" />
-    <Compile Include="Models\Rutas.cs" />
+    <Compile Include="Models\Reportes_Ruta.cs" />
+    <Compile Include="Models\RutaH.cs" />
     <Compile Include="Models\TiposEstatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -300,10 +302,11 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="TempImages\" />
+    <Folder Include="Views\Rutas\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201411051757100_Initial.resx">
-      <DependentUpon>201411051757100_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201412031432514_InitMigration.resx">
+      <DependentUpon>201412031432514_InitMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -14,11 +14,22 @@ namespace AwareswebApp
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.MapMvcAttributeRoutes();
 
+           
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+
+
+
+           // routes.MapRoute(
+           //    name: "ObtenerRutas",
+           //    url: "{controller}/{action}/{usrCor}",
+           //     defaults: new { controller = "Rutas", action = "getRoutesPerUser" }
+           //);
+
             routes.MapRoute(
                 name: "RecepcionConsumo",
                 url: "{controller}/{action}/{userNameColaborador}/{lecturaConsumo}/{tipoConsumo}/{Fecha}",

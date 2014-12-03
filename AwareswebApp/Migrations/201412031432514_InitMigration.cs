@@ -3,7 +3,7 @@ namespace AwareswebApp.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Initial : DbMigration
+    public partial class InitMigration : DbMigration
     {
         public override void Up()
         {
@@ -58,22 +58,25 @@ namespace AwareswebApp.Migrations
                 .PrimaryKey(t => t.numReporte);
             
             CreateTable(
-                "dbo.Rutas",
+                "dbo.Reportes_Ruta",
                 c => new
                     {
-                        numRuta = c.Int(nullable: false, identity: true),
-                        Descripcion = c.String(),
-                        idLugar = c.Int(nullable: false),
-                        idUsuario = c.Int(nullable: false),
+                        id = c.Int(nullable: false, identity: true),
+                        numRuta = c.Int(nullable: false),
                         numReporte = c.Int(nullable: false),
-                        situacion = c.String(),
-                        ubicacion = c.String(),
-                        longitud = c.String(),
-                        latitud = c.String(),
-                        estatusReporte = c.String(),
                         fechaCreacion = c.DateTime(nullable: false),
                     })
-                .PrimaryKey(t => t.numRuta);
+                .PrimaryKey(t => t.id);
+            
+            CreateTable(
+                "dbo.RutaHs",
+                c => new
+                    {
+                        Rutaid = c.Int(nullable: false, identity: true),
+                        usuario = c.String(),
+                        status = c.String(),
+                    })
+                .PrimaryKey(t => t.Rutaid);
             
             CreateStoredProcedure(
                 "dbo.Reporte_Insert",
@@ -154,7 +157,8 @@ namespace AwareswebApp.Migrations
             DropStoredProcedure("dbo.Reporte_Delete");
             DropStoredProcedure("dbo.Reporte_Update");
             DropStoredProcedure("dbo.Reporte_Insert");
-            DropTable("dbo.Rutas");
+            DropTable("dbo.RutaHs");
+            DropTable("dbo.Reportes_Ruta");
             DropTable("dbo.Reportes");
             DropTable("dbo.Consumoes");
             DropTable("dbo.Colaboradors");

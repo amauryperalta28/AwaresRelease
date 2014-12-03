@@ -107,37 +107,7 @@ namespace AwareswebApp.Controllers
             return View(colaborador);
         }
 
-        // GET: Colaboradores/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Colaborador colaborador = db.Colaboradores.Find(id);
-            if (colaborador == null)
-            {
-                return HttpNotFound();
-            }
-            return View(colaborador);
-        }
-
-        // POST: Colaboradores/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit([Bind(Include = "userNameColaborador,nombreUsuario,Email,Password,sector,localidad,tipoUsuario,fechaCreacion")] Colaborador colaborador)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.Entry(colaborador).State = EntityState.Modified;
-        //        db.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-        //    return View(colaborador);
-        //}
-
+       
         // GET: Colaboradores/Delete/5
         public ActionResult Delete(int? id)
         {

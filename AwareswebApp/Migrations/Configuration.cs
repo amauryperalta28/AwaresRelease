@@ -26,16 +26,6 @@ namespace AwareswebApp.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
-            string sql = "CREATE PROCEDURE [dbo].[Procedure](@usuario varchar(20) = '*',	@mes int = 0,	@anio int = 0)AS " + Environment.NewLine +
-          "if(@usuario <>  '*' and @mes <> 0 and @anio <> 0)" + Environment.NewLine +
-          "Begin" + Environment.NewLine +
-          "select UsernameColaborador, sum(lectura)  from Consumoes where month(fechaCreacion) = @mes and  year(fechaCreacion) = @anio and UsernameColaborador =@usuario" + Environment.NewLine + "group by UsernameColaborador" + Environment.NewLine + "end" + Environment.NewLine +
-          "else if( @mes <> 0 and @anio <>0)" + Environment.NewLine + "Begin" + Environment.NewLine +
-          "select UsernameColaborador, sum(lectura) from Consumoes where month(fechaCreacion) = @mes and year(fechaCreacion) = @anio group by UsernameColaborador" + Environment.NewLine + "end" + Environment.NewLine + "else if(@anio <> 0 )" + Environment.NewLine + "begin" + Environment.NewLine +
-          "select UsernameColaborador, sum(lectura) from Consumoes where year(fechaCreacion) = @anio group by UsernameColaborador" + Environment.NewLine +
-          "end" + Environment.NewLine + "else if(@anio = 0 )" + Environment.NewLine + "begin" + Environment.NewLine +
-          "select UsernameColaborador, sum(lectura) from Consumoes where year(fechaCreacion) =year(GETDATE()) group by usernameColaborador" + Environment.NewLine + "end" + Environment.NewLine;
-            context.Database.ExecuteSqlCommand(sql);   
         }
     }
 }

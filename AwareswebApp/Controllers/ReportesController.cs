@@ -290,6 +290,51 @@ namespace AwareswebApp.Controllers
         }
         #endregion
 
+        /**
+         * Cambia el estatus de un reporte segun un parametro indicado
+         * @param numRep   Este es el numero de reporte a actualizar
+         * @param accion   Este es el parametro de la accion a ejecutar
+         * @return         Json con 1 si se actualizo, 0 si no.
+         */
+        [Route("Reportes/updateReportstatus/{numRep}/{accion}")]
+        public ActionResult updateReportstatus(string numRep, string accion)
+        {
+            int acc = Convert.ToInt32(accion);
+            int nrep = Convert.ToInt32(numRep);
+            try
+            {
+                // Se obtiene el reporte
+                Reporte rep = db.Reportes.First(i => i.numReporte == nrep);
+
+                // Dependiendo del parametro accion, se ejecuta una accion especifica
+                switch (acc)
+                {   
+                    case 1:
+                        // Se actualiza el reporte a estatus resuelto
+                        rep.estatus = "Resuelto";
+                        break;
+                    case 2:
+                        // Se actualiza el reporte a estatus Pendiente confirmar
+                        rep.estatus = "Pendiente confirmar";
+                        break;
+                    case 3:
+                        // Se actualiza el reporte a estatus No resuelto
+                        rep.estatus = "No resuelto";
+                        break;
+                }
+
+                // Se guardan los cambios en la base de datos
+                db.SaveChanges();
+
+                return Json(1, JsonRequestBehavior.AllowGet);
+                
+            }
+            catch(Exception ex)
+            {
+                return Json(0, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         public ActionResult Menu()
         {
             

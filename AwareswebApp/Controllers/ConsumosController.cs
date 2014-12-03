@@ -108,7 +108,7 @@ namespace AwareswebApp.Controllers
         }
         
         // GET: Consumos
-        public void Rec(string userNameColaborador, string lecturaConsumo)
+        public ActionResult Rec(string userNameColaborador, string lecturaConsumo)
         {
             // Se recibe las lecturas
             String l = lecturaConsumo;
@@ -135,11 +135,16 @@ namespace AwareswebApp.Controllers
                     Consumo c = new Consumo(colab, lectura);
                     db.Consumos.Add(c);
                 }
+                else
+                {
+                    return Json(0, JsonRequestBehavior.AllowGet);
+                }
                 
                 
             }
             
             db.SaveChanges();
+            return Json(1, JsonRequestBehavior.AllowGet);
             
         }
 

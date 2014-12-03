@@ -20,7 +20,10 @@ namespace AwareswebApp.Models
             }
         public DbSet<Consumo> Consumos { get; set; } 
         public DbSet<Reporte> Reportes { get; set; }
-        public DbSet<Rutas> Rutas { get; set; } 
+        public DbSet<Reportes_Ruta> Reportes_Ruta { get; set; }
+        public DbSet<RutaH> RutaH { get; set; }
+       
+        
         public DbSet<Colaborador> Colaboradores { get; set; } //Esta es una subclase de OrdenModels
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
