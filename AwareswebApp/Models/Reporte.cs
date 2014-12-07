@@ -49,7 +49,7 @@ namespace AwareswebApp.Models
             this.calle = calle;
             fechaCorreccion = DateTime.Now.Add(new TimeSpan(7));
             fechaCreacion = DateTime.Now;
-            estatus = "No Resuelto";
+            estatus = "No resuelto";
             Comentarios = " ";
             Descripcion = "";
             FotoUrl = "";
@@ -60,7 +60,7 @@ namespace AwareswebApp.Models
 	    {
             fechaCorreccion = DateTime.Now.Add(new TimeSpan(7));
             fechaCreacion = DateTime.Now;
-            estatus = "No Resuelto";
+            estatus = "No resuelto";
             Comentarios = " ";
             Descripcion = "";
             FotoUrl = "";

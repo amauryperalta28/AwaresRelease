@@ -312,6 +312,7 @@ namespace AwareswebApp.Controllers
                     case 1:
                         // Se actualiza el reporte a estatus resuelto
                         rep.estatus = "Resuelto";
+                        rep.fechaCreacion = DateTime.Now;
                         break;
                     case 2:
                         // Se actualiza el reporte a estatus Pendiente confirmar
@@ -342,7 +343,7 @@ namespace AwareswebApp.Controllers
         }
         // GET: Reportes
         [Authorize]
-        public ActionResult Index(string tipoSituacion, string sector, string localidad)
+        public ActionResult Index(string tipoSituacion, string sector, string localidad,string estatus)
         {
             Business obj = new Business();
          
@@ -354,6 +355,9 @@ namespace AwareswebApp.Controllers
             
             // Creo una lista para guardar las localidades reportadas
             var localidadLst = new List<string>();
+
+            // Creo una lista para guardar los diferentes estados de reportes
+            var EstadosLst = new List<string>();
 
             #endregion
 
@@ -369,6 +373,10 @@ namespace AwareswebApp.Controllers
             var localidadQry = from a in db.Reportes
                                select a.localidad;
 
+            // Hago query en la tabla reportes obteniendo las estatus de los reportes
+            var EstadosQry = from a in db.Reportes
+                               select a.estatus;
+
             // Relleno la lista con los tipos de situaciones no repetidas de los que se han hecho reportes
             tipoSitLst.AddRange(tipoSitQry.Distinct());
             ViewBag.tipoSituacion = new SelectList(tipoSitLst);
@@ -380,61 +388,133 @@ namespace AwareswebApp.Controllers
             // Relleno la lista con las localidades no repetidas
             localidadLst.AddRange(localidadQry.Distinct());
             ViewBag.localidad = new SelectList(localidadLst);
+
+            // Relleno la lista con las localidades no repetidas
+            EstadosLst.AddRange(EstadosQry.Distinct());
+            ViewBag.estatus = new SelectList(EstadosLst);
             // Guardo en variable los reportes del tipo y sector indicados, si se indico. Si no se indico retorno todo los reportes no resueltos
 
             var listaReportes = from a in db.Reportes
-                                where a.estatus == "1"
+                                where a.estatus == estatus
                                 select a;
             #endregion
 
             #region CombinacionReportes
+
             // Reportes por localidad y tipo situacion
-            if (!String.IsNullOrEmpty(tipoSituacion) && !String.IsNullOrEmpty(localidad))
+            if (!String.IsNullOrEmpty(tipoSituacion))
             {
-                listaReportes = from a in db.Reportes
-                                where a.situacion == tipoSituacion &&
-                                      a.localidad == a.localidad &&
-                                      a.estatus == "1"
-                                select a;
+                if (!String.IsNullOrEmpty(sector) && !String.IsNullOrEmpty(localidad))
+                {
+                    listaReportes = from a in db.Reportes
+                                    where a.situacion == tipoSituacion &&
+                                          a.localidad == localidad &&
+                                          a.sector == sector &&
+                                          a.estatus == estatus
+                                    select a;
 
+                }
+                else if (!String.IsNullOrEmpty(localidad))
+                {
+                    listaReportes = from a in db.Reportes
+                                    where a.situacion == tipoSituacion &&
+                                          a.localidad == localidad &&
+                                          a.estatus == estatus
+                                    select a;
+
+                }
+                else if (!String.IsNullOrEmpty(sector) )
+                {
+
+                    listaReportes = from a in db.Reportes
+                                    where a.situacion == tipoSituacion &&
+                                          a.sector == sector &&
+                                          a.estatus == estatus
+                                    select a;                      
+                }
+                else
+                {
+                    listaReportes = from a in db.Reportes
+                                    where a.situacion == tipoSituacion &&
+                                          a.estatus == estatus
+                                    select a;
+                }
             }
-            // Reportes por sector y tipo situacion
-            else if (!String.IsNullOrEmpty(tipoSituacion) && !String.IsNullOrEmpty(sector))
+            else
             {
-                listaReportes = from a in db.Reportes
-                                where a.situacion == tipoSituacion &&
-                                      a.sector == sector &&
-                                      a.estatus == "1"
-                                select a;
+                if (!String.IsNullOrEmpty(sector) && !String.IsNullOrEmpty(localidad))
+                {
+                    listaReportes = from a in db.Reportes
+                                    where a.localidad == localidad &&
+                                          a.sector == sector &&
+                                          a.estatus == estatus
+                                    select a;
 
-            }
-            //Reportes por tipo situacion
-            else if (!String.IsNullOrEmpty(tipoSituacion))
-            {
-                listaReportes = from a in db.Reportes
-                                where a.situacion == tipoSituacion &&
-                                      a.estatus == "1"
-                                select a;
+                }
+                else if (!String.IsNullOrEmpty(localidad))
+                {
+                    listaReportes = from a in db.Reportes
+                                    where a.localidad == localidad &&
+                                          a.estatus == estatus
+                                    select a;
 
-            }
-            //Reportes por localidades
-            else if (!String.IsNullOrEmpty(localidad))
-            {
-                listaReportes = from a in db.Reportes
-                                where a.localidad == localidad &&
-                                      a.estatus == "1"
-                                select a;
+                }
+                else if (!String.IsNullOrEmpty(sector))
+                {
 
+                    listaReportes = from a in db.Reportes
+                                    where a.sector == sector &&
+                                          a.estatus == estatus
+                                    select a;
+                }
             }
-            //Reportes por sectores
-            else if (!String.IsNullOrEmpty(sector))
-            {
-                listaReportes = from a in db.Reportes
-                                where a.sector == sector &&
-                                      a.estatus == "1"
-                                select a;
 
-            }
+            //if (!String.IsNullOrEmpty(tipoSituacion) && !String.IsNullOrEmpty(localidad))
+            //{
+            //    listaReportes = from a in db.Reportes
+            //                    where a.situacion == tipoSituacion &&
+            //                          a.localidad == a.localidad &&
+            //                          a.estatus == "No resuelto"
+            //                    select a;
+
+            //}
+            //// Reportes por sector y tipo situacion
+            //else if (!String.IsNullOrEmpty(tipoSituacion) && !String.IsNullOrEmpty(sector))
+            //{
+            //    listaReportes = from a in db.Reportes
+            //                    where a.situacion == tipoSituacion &&
+            //                          a.sector == sector &&
+            //                          a.estatus == "No resuelto"
+            //                    select a;
+
+            //}
+            ////Reportes por tipo situacion
+            //else if (!String.IsNullOrEmpty(tipoSituacion))
+            //{
+            //    listaReportes = from a in db.Reportes
+            //                    where a.situacion == tipoSituacion &&
+            //                          a.estatus == "No resuelto"
+            //                    select a;
+
+            //}
+            ////Reportes por localidades
+            //else if (!String.IsNullOrEmpty(localidad))
+            //{
+            //    listaReportes = from a in db.Reportes
+            //                    where a.localidad == localidad &&
+            //                          a.estatus == "No resuelto"
+            //                    select a;
+
+            //}
+            ////Reportes por sectores
+            //else if (!String.IsNullOrEmpty(sector))
+            //{
+            //    listaReportes = from a in db.Reportes
+            //                    where a.sector == sector &&
+            //                          a.estatus == "No resuelto"
+            //                    select a;
+
+            //}
             #endregion
 
             ViewBag.Latitud = 18.523471;
@@ -465,7 +545,7 @@ namespace AwareswebApp.Controllers
             //                    select a;
 
             List<Reporte> listaReportes = (from a in db.Reportes
-                                           where a.estatus == "1"
+                                           where a.estatus == "No resuelto"
                                            select a).ToList();
 
 
@@ -473,7 +553,7 @@ namespace AwareswebApp.Controllers
             {
                 listaReportes = (from a in db.Reportes
                                  where a.sector == sector &&
-                                       a.estatus == "1"
+                                       a.estatus == "No resuelto"
                                  select a).ToList();
 
             }
@@ -510,7 +590,7 @@ namespace AwareswebApp.Controllers
         {
             // Obtengo los reportes que no han sido resueltos
             var n = from a in db.Reportes
-                    where a.estatus == "1"
+                    where a.estatus == "No resuelto"
                     select a;
 
             // Envio lista de reportes

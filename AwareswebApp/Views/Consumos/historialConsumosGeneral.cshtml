@@ -23,7 +23,7 @@
             <p>
                 Colaborador: @Html.DropDownList("colabFilter", "All")
                 Mes: @Html.DropDownList("monthFilter", "All")
-                Year: @Html.DropDownList("yearFilter", "All")
+                Year: @Html.DropDownList("yearFilter")
                 <input type="submit" class="btn btn-default dropdown-toggle" value="Filter" />
             </p>
         }
@@ -34,7 +34,7 @@
                     @Html.DisplayName("Usuario")
                 </th>
                 <th>
-                    @Html.DisplayName("Total Consumo(m3)")
+                    Total Consumo(m<sup>3</sup>)
                 </th>
                 @*<th>
                         @Html.DisplayNameFor(model => model.lectura)

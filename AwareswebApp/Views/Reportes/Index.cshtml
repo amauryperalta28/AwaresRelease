@@ -27,11 +27,11 @@
             <p>
                 Situación:  @Html.DropDownList("tipoSituacion", "All")
                 Sector: @Html.DropDownList("sector", "All")
-        
-                
             </p>
-    <p>Localidad: @Html.DropDownList("localidad", "All")
-        <input type="submit" class="btn btn-default dropdown-toggle" value="Filter" />
+           <p>
+               Localidad: @Html.DropDownList("localidad", "All")
+               Estatus: @Html.DropDownList("estatus", "All")
+               <input type="submit" class="btn btn-default dropdown-toggle" value="Filter" />
         </p>
 
 
@@ -187,19 +187,32 @@
             scale: 30
         };
 
+        var contentString = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'+
+      '<div id="bodyContent">'+
+      '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
+      
+      'Heritage Site.</p>'+
+      '<p>Attribution: Uluru, <a href="http://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">'+
+      'http://en.wikipedia.org/w/index.php?title=Uluru</a> '+
+      '(last visited June 22, 2009).</p>'+
+      '<input type="submit" class="btn btn-default dropdown-toggle" value="Agregar" />'+
+      '<input type="submit" class="btn btn-default dropdown-toggle" value="Eliminar" />'+
+      '</div>'+
+      '</div>';
+
+        var infowindow = new google.maps.InfoWindow({
+            content: contentString
+        });
+
         coordenada.forEach(function (entry) {
-            if(entry.estatus == 1)
-            {
-                var estatus = "No resuelto"
-            }
-            else
-            {
-                var estatus = "Resuelto"
-            }
+           
             marker = new google.maps.Marker({
                 position: new google.maps.LatLng(entry.latitud, entry.longitud),
                 map: map,
-                title: entry.situacion + "\nColaborador: "+entry.userName + " \nEstatus: "+ estatus,
+                title: entry.situacion + "\nColaborador: "+entry.userName + " \nEstatus: "+ entry.estatus,
                 icon: detallesDeMarcadores(entry.situacion)
                 
             });
@@ -208,6 +221,7 @@
             google.maps.event.addListener(marker, 'click', function() {
                 map.setZoom(18);
                 map.setCenter(new google.maps.LatLng(entry.latitud, entry.longitud));
+                infowindow.open(map,marker);
             });
         });
 
