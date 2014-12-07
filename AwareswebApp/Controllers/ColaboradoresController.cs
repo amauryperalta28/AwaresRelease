@@ -36,6 +36,10 @@ namespace AwareswebApp.Controllers
                         
             if(colab.Count() == 1)
             {
+                if(username.Equals("janelcueto"))
+                {
+                    return Json(2, JsonRequestBehavior.AllowGet);
+                }
                 return Json(1, JsonRequestBehavior.AllowGet);
             }
             else
