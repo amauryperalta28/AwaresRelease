@@ -590,7 +590,6 @@ namespace AwareswebApp.Controllers
         {
             // Obtengo los reportes que no han sido resueltos
             var n = from a in db.Reportes
-                    where a.estatus == "No resuelto"
                     select a;
 
             // Envio lista de reportes
