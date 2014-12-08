@@ -19,19 +19,19 @@ namespace AwareswebApp.Models
                 
         public DateTime fechaCreacion { get; set; }
 
-        public Colaborador(string usuario, string email, string password)
+        public Colaborador(string usuario, string email, string password, string tipo)
         {
             nombreUsuario = usuario;
             this.Email = email;
             this.Password = password;
-            tipoUsuario = "Colaborador";
+            tipoUsuario = tipo;
             fechaCreacion = DateTime.Now;
             sector = "";
             localidad = "";
         }
         public Colaborador()
         {
-            tipoUsuario = "Colaborador";
+            tipoUsuario = "Corrector";
             fechaCreacion = DateTime.Now;
             sector = "";
             localidad = "";

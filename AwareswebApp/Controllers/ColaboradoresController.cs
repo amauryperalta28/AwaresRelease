@@ -35,8 +35,9 @@ namespace AwareswebApp.Controllers
                         select n;
                         
             if(colab.Count() == 1)
-            {
-                if(username.Equals("janelcueto"))
+            {   string tipo = colab.SingleOrDefault().tipoUsuario;
+
+                if(tipo.Equals("Corrector"))
                 {
                     return Json(2, JsonRequestBehavior.AllowGet);
                 }
@@ -75,7 +76,7 @@ namespace AwareswebApp.Controllers
             // Si el usuario no existe, crealo
             if (user.Count() == 0)
             {
-                Colaborador colab = new Colaborador(usuario, email, password);
+                Colaborador colab = new Colaborador(usuario, email, password,"Colaborador");
                 db.Colaboradores.Add(colab);
                 db.SaveChanges();
                 
@@ -91,6 +92,7 @@ namespace AwareswebApp.Controllers
         // GET: Colaboradores/Create
         public ActionResult Create()
         {
+                       
             return View();
         }
 
@@ -99,10 +101,11 @@ namespace AwareswebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "nombreUsuario,Email,Password")] Colaborador colaborador)
+        public ActionResult Create([Bind(Include = "nombreUsuario,Email,Password,tipoUsuario")] Colaborador colaborador)
         {
             if (ModelState.IsValid)
             {
+                colaborador.tipoUsuario = "Corrector";
                 db.Colaboradores.Add(colaborador);
                 db.SaveChanges();
                 return RedirectToAction("Index");

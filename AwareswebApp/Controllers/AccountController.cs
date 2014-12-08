@@ -108,7 +108,7 @@ namespace AwareswebApp.Controllers
                     // Si el usuario no existe, crealo
                     if (Validcolab.Count() == 0)
                     {
-                        Colaborador colab = new Colaborador(username, email, password);
+                        Colaborador colab = new Colaborador(username, email, password,"Colaborador");
                         db.Colaboradores.Add(colab);
                         db.SaveChanges();
 
