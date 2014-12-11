@@ -288,6 +288,7 @@
     <Content Include="Views\Reportes\showChart.cshtml" />
     <Content Include="Views\Reportes\Est_PorSector.cshtml" />
     <Content Include="Views\Reportes\Est_porEstatus.cshtml" />
+    <Content Include="Views\Rutas\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -302,7 +303,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="TempImages\" />
-    <Folder Include="Views\Rutas\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201412031432514_InitMigration.resx">

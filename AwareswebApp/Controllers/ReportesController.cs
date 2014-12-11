@@ -342,7 +342,7 @@ namespace AwareswebApp.Controllers
             return View();
         }
         // GET: Reportes
-        [Authorize]
+        
         public ActionResult Index(string tipoSituacion, string sector, string localidad,string estatus)
         {
             Business obj = new Business();
@@ -469,52 +469,7 @@ namespace AwareswebApp.Controllers
                 }
             }
 
-            //if (!String.IsNullOrEmpty(tipoSituacion) && !String.IsNullOrEmpty(localidad))
-            //{
-            //    listaReportes = from a in db.Reportes
-            //                    where a.situacion == tipoSituacion &&
-            //                          a.localidad == a.localidad &&
-            //                          a.estatus == "No resuelto"
-            //                    select a;
-
-            //}
-            //// Reportes por sector y tipo situacion
-            //else if (!String.IsNullOrEmpty(tipoSituacion) && !String.IsNullOrEmpty(sector))
-            //{
-            //    listaReportes = from a in db.Reportes
-            //                    where a.situacion == tipoSituacion &&
-            //                          a.sector == sector &&
-            //                          a.estatus == "No resuelto"
-            //                    select a;
-
-            //}
-            ////Reportes por tipo situacion
-            //else if (!String.IsNullOrEmpty(tipoSituacion))
-            //{
-            //    listaReportes = from a in db.Reportes
-            //                    where a.situacion == tipoSituacion &&
-            //                          a.estatus == "No resuelto"
-            //                    select a;
-
-            //}
-            ////Reportes por localidades
-            //else if (!String.IsNullOrEmpty(localidad))
-            //{
-            //    listaReportes = from a in db.Reportes
-            //                    where a.localidad == localidad &&
-            //                          a.estatus == "No resuelto"
-            //                    select a;
-
-            //}
-            ////Reportes por sectores
-            //else if (!String.IsNullOrEmpty(sector))
-            //{
-            //    listaReportes = from a in db.Reportes
-            //                    where a.sector == sector &&
-            //                          a.estatus == "No resuelto"
-            //                    select a;
-
-            //}
+           
             #endregion
 
             ViewBag.Latitud = 18.523471;

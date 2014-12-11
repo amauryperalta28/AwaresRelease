@@ -67,5 +67,27 @@ namespace AwareswebApp.Controllers
 
             
         }
+
+        /**
+         * Pantalla para la creacion de rutas
+         */
+        public ActionResult Create(string tipoSituacion, string sector, string localidad, string estatus)
+        {
+            Business obj = new Business();
+
+
+            var listaReportes = from a in db.Reportes
+                                where a.estatus == "No resuelto"
+                                select a;
+           
+
+            ViewBag.Latitud = 18.523471;
+            ViewBag.Longitud = -69.8746229;
+            ViewBag.coordenadas = listaReportes;
+
+
+            return View(listaReportes);
+            
+        }
     }
 }

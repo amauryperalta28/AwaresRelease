@@ -1,0 +1,334 @@
+﻿@model IEnumerable<AwareswebApp.Models.Reporte>
+@using Microsoft.Ajax.Utilities
+
+@{
+    ViewBag.Title = "Create";
+}
+
+
+
+
+<div id="page">
+    <div id="content">
+        <div class="box">
+
+        </div>
+
+        <h2>Creaci&oacute;n de Rutas</h2>
+
+        <br />
+        <div id="map_canvas" style="width: 780px; height: 460px;border-style:solid;border-width:5px;border-color:ActiveBorder">  </div>
+
+        @*<p>
+                @Html.ActionLink("Create New", "Create")
+            </p>*@
+        
+        <input id="Crear" type="submit" class="btn btn-primary dropdown-toggle" value="Crear Ruta" />
+        <input id="Guardar" type="submit" class="btn btn-default dropdown-toggle" value="Guardar Ruta" />
+        <input id="Cancelar" type="submit" class="btn btn-info dropdown-toggle" value="Cancelar" />
+        <br />
+        <table class="table table-hover">
+            <tr>
+                @*<th>
+                        @Html.DisplayNameFor(model => model.numReporteUsr)
+                    </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.userName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Descripcion)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.situacion)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.sector)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.calle)
+                </th>
+                @*<th>
+                        @Html.DisplayNameFor(model => model.ubicacion)
+                    </th>*@
+
+                @*<th>
+                        @Html.DisplayNameFor(model => model.Comentarios)
+                    </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.estatus)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.fechaCreacion)
+                </th>
+                @*<th>
+                        @Html.DisplayNameFor(model => model.fechaCorreccion)
+                    </th>*@
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    @*<td>
+                            @Html.DisplayFor(modelItem => item.numReporteUsr)
+                        </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.userName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Descripcion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.situacion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.sector)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.calle)
+                    </td>
+
+                    @*<td>
+                            @Html.DisplayFor(modelItem => item.ubicacion)
+                        </td>*@
+
+                    @*<td>
+                            @Html.DisplayFor(modelItem => item.Comentarios)
+                        </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.estatus)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.fechaCreacion)
+                    </td>
+                    @*<td>
+                            @Html.DisplayFor(modelItem => item.fechaCorreccion)
+                        </td>*@
+                    <td>
+                        @*@Html.ActionLink("Edit", "Edit", new { id=item.numReporte }) |
+                            @Html.ActionLink("Details", "Details", new { id=item.numReporte }) |
+                            @Html.ActionLink("Delete", "Delete", new { id=item.numReporte })*@
+                    </td>
+                </tr>
+            }
+
+        </table>
+        
+        <br class="clearfix" />
+    </div>
+        
+        <br class="clearfix" />
+</div>
+@*@Scripts.Render("~/bundles/jquery")
+    <div id="map_canvas" style="width: 910px; height: 360px;border-style:solid;border-width:5px;border-color:ActiveBorder">  </div>*@
+
+
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        initialize();
+    });
+
+    $('#Crear').click(function()
+    {
+        
+        $('#Crear').removeClass('btn btn-primary dropdown-toggle');
+        $('#Crear').addClass('btn btn-default dropdown-toggle');
+
+        $('#Guardar').removeClass('btn btn-default dropdown-toggle');
+        $('#Guardar').addClass('btn btn-primary dropdown-toggle');
+
+        $('#infoBox').removeClass('btn btn-default dropdown-toggle');
+        $('#infoBox').addClass('btn btn-primary dropdown-toggle');
+
+
+    } );
+    $('#Cancelar').click(function()
+    {
+        $('#Guardar').removeClass('btn btn-primary dropdown-toggle');
+        $('#Guardar').addClass('btn btn-default dropdown-toggle');
+
+        $('#Crear').removeClass('btn btn-default dropdown-toggle');
+        $('#Crear').addClass('btn btn-primary dropdown-toggle');
+
+        $('#infoBox').removeClass('btn btn-primary dropdown-toggle');
+        $('#infoBox').addClass('btn btn-default dropdown-toggle');
+
+        $('#infoBox1').removeClass('btn btn-primary dropdown-toggle');
+        $('#infoBox1').addClass('btn btn-default dropdown-toggle');
+
+    } );
+
+    $('#Guardar').click(function()
+    {
+        $('#Guardar').removeClass('btn btn-primary dropdown-toggle');
+        $('#Guardar').addClass('btn btn-default dropdown-toggle');
+
+        $('#Crear').removeClass('btn btn-default dropdown-toggle');
+        $('#Crear').addClass('btn btn-primary dropdown-toggle');
+
+        $('#infoBox').removeClass('btn btn-primary dropdown-toggle');
+        $('#infoBox').addClass('btn btn-default dropdown-toggle');
+
+        $('#infoBox1').removeClass('btn btn-primary dropdown-toggle');
+        $('#infoBox1').addClass('btn btn-default dropdown-toggle');
+
+    } );
+
+    function initialize() {
+
+        var coordenada =  @Html.Raw(Json.Encode(@ViewBag.coordenadas));
+        var latitud = '@ViewBag.Latitud';
+        var longitud = '@ViewBag.Longitud';
+        var listaDeReportes = new Array();
+
+        var mapOptions = {
+            center: new google.maps.LatLng(latitud, longitud),
+            zoom: 11,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            mapTypeControl: true,
+            mapTypeControlOptions: {
+                style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+                position: google.maps.ControlPosition.BOTTOM_CENTER
+            },
+            panControl: true,
+            panControlOptions: {
+                position: google.maps.ControlPosition.TOP_LEFT
+            },
+            zoomControl: true,
+            zoomControlOptions: {
+                style: google.maps.ZoomControlStyle.LARGE,
+                position: google.maps.ControlPosition.LEFT_CENTER
+            },
+            scaleControl: true,
+            streetViewControl: true,
+            streetViewControlOptions: {
+                position: google.maps.ControlPosition.LEFT_TOP
+            }
+        };
+        google.maps.visualRefresh = true;
+        var map = new google.maps.Map(document.getElementById("map_canvas"),
+          mapOptions);
+
+        var Escasez = "http://www.google.com/intl/en_us/mapfiles/ms/micons/green-dot.png"
+        var averia = "http://www.clker.com/cliparts/I/l/L/S/W/9/map-marker.svg"
+        var circle = {
+            path: google.maps.SymbolPath.CIRCLE,
+            fillColor: "green",
+            fillOpacity: .2,
+            strokeColor: 'white',
+            strokeWeight: .5,
+            scale: 30
+        };
+       
+
+        var contentString = '<div id="contentinfoWindow">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h4 id="firstHeading" class="firstHeading">Datos</h4>'+
+      '<div id="bodyContent">'+
+         '<ol><li> Reporte de: </li>'+
+            '<li> Colaborador:</li>'+
+            '<li> Estatus:</li>'+
+        '</ol>'+
+      '<table>'+
+        '<tr>'+
+        '<td><input type="submit" class="btn btn-default dropdown-toggle" value="Agregar" /> </td>'+
+        '<td><input type="submit" class="btn btn-default dropdown-toggle" value="Eliminar" /> </td>'+
+        ' </tr>'+
+        '</table>'+
+      '</div>'+
+        '</div>';
+
+        var infowindow = new google.maps.InfoWindow({
+            content: contentString
+        });
+        
+        coordenada.forEach(function (entry) {
+            
+            marker = new google.maps.Marker({
+                position: new google.maps.LatLng(entry.latitud, entry.longitud),
+                map: map,
+                title: entry.situacion + "\nColaborador: "+entry.userName + " \nEstatus: "+ entry.estatus + "\n reporte:"+entry.numReporte,
+                icon: detallesDeMarcadores(entry.situacion)
+
+            });
+
+            if(entry.estatus == "Resuelto")
+            {
+                if (marker.getAnimation() == null) {
+                    marker.setAnimation(google.maps.Animation.BOUNCE);
+                }
+            }
+
+            google.maps.event.addListener(marker, 'click', function() {
+                var infoBoxButtonClass ="btn btn-default dropdown-toggle";
+                if( $('#Crear').hasClass('btn btn-default dropdown-toggle'))
+                {
+                    infoBoxButtonClass="btn btn-primary dropdown-toggle";
+                }
+                var contentString1 = '<div id="contentinfoWindow">'+
+                                      '<div id="siteNotice">'+
+                                      '</div>'+
+                                      '<h4 id="firstHeading" class="firstHeading">Datos Reporte</h4>'+
+                                      '<div id="bodyContent">'+
+                                         '<ol><li> Reporte de: '+entry.situacion + ' </li>'+
+                                            '<li> Colaborador: '+ entry.userName+'</li>'+
+                                            '<li> Estatus: '+ entry.estatus+'</li>'+
+                                        '</ol>'+
+                                      '<table>'+
+                                        '<tr>'+
+                                        '<td><input id="infoBox" type="submit" class="'+infoBoxButtonClass+'" value="Agregar" /> </td>'+
+                                        '<td><input id="infoBox1" type="submit" class="'+infoBoxButtonClass +'" value="Eliminar" /> </td>'+
+                                        ' </tr>'+
+                                        '</table>'+
+                                      '</div>'+
+                                        '</div>';
+                
+                var infowindow1 = new google.maps.InfoWindow({
+                    content: contentString1
+                });
+                
+                map.setZoom(18);
+                map.setCenter(new google.maps.LatLng(entry.latitud, entry.longitud));
+                infowindow1.open(map,marker);
+               
+                if (marker.getAnimation() != null) {
+                    marker.setAnimation(null);
+                }
+
+                
+            });
+        });
+
+        $(function () {
+            $('#menu > ul').dropotron({
+                mode: 'fade',
+                globalOffsetY: 11,
+                offsetY: -15
+            });
+
+        });
+
+
+        function detallesDeMarcadores(IdSituacion)
+        {
+            var markerLogo;
+
+            if(IdSituacion == "Escasez"){
+                markerLogo = new google.maps.MarkerImage(Escasez,
+                null, null,null, new google.maps.Size(35, 35));  }
+
+            if(IdSituacion == "Averia"){
+                markerLogo = new google.maps.MarkerImage(averia,
+                null, null,null, new google.maps.Size(45, 45));  }
+
+            return markerLogo;
+        }
+    }
+
+</script>
+
+
