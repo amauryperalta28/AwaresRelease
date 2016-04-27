@@ -105,9 +105,10 @@
 
     <br class="clearfix" />
 </div>
-@*@Scripts.Render("~/bundles/jquery")
-<div id="map_canvas" style="width: 540px; height: 360px;border-style:solid;border-width:5px;border-color:ActiveBorder">  </div>*@
+
+
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript" src="~/Content/egeoxml.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         initialize();
@@ -119,6 +120,8 @@
         var longitud = '@ViewBag.Longitud';
         var bermudaTriangle;
 
+        
+       
         var mapOptions = {
             center: new google.maps.LatLng(latitud, longitud),
             zoom: 11,
@@ -144,17 +147,50 @@
             }
         };
         google.maps.visualRefresh = true;
+
         var map = new google.maps.Map(document.getElementById("map_canvas"),
           mapOptions);
-
-        // The Google Maps JavaScript API will automatically draw the closing side.
-        var triangleCoords = [
-          new google.maps.LatLng(18.4633967, -69.9296075),
-          new google.maps.LatLng(18.461685, -69.935931),
-          new google.maps.LatLng(18.457879, -69.930889)
-        ];
-      
+        //var exml;
+        //exml = new GeoXml("exml", map, 'SE_LaJulia.kml',{
+        //    iwwidth:280,
+        //    dohilite:false
+        //});
+        
        
+        //exml.parse();
+        var kml =  "<?xml version='1.0' encoding='UTF-8'?>"+
+"<kml xmlns='http://www.opengis.net/kml/2.2'>"+
+	"<Document>"+
+		"<name>+Capa sin título</name>"+
+		"<Placemark>"+
+			"<styleUrl>+#poly-000000-1-76</styleUrl>"+
+			"<name>+La julia Sector</name>"+
+			"<ExtendedData>"+
+			"</ExtendedData>"+
+			"<Polygon>"+
+				"<outerBoundaryIs>"+
+					"<LinearRing>"+
+						"<tessellate>+1</tessellate>"+
+						"<coordinates>+-69.9359393,18.462696299999998,0.0 -69.9323988,18.458768100000004,0.0 -69.9302959,18.4555726,0.0 -69.9299097,18.4555726,0.0 -69.9292874,18.456692,0.0 -69.9285364,18.457608,0.0 -69.9277639,18.4581372,0.0 -69.9263477,18.4583203,0.0 -69.9260473,18.4582593,0.0 -69.9256825,18.457587599999997,0.0 -69.9255967,18.458442500000004,0.0 -69.9253607,18.4591752,0.0 -69.9245882,18.4600097,0.0 -69.9199963,18.462899900000004,0.0 -69.9198031,18.4630627,0.0 -69.9208331,18.464853800000004,0.0 -69.9269915,18.463368,0.0 -69.9278927,18.4631645,0.0 -69.9284291,18.4631238,0.0 -69.9288368,18.4630423,0.0 -69.9301887,18.4655051,0.0 -69.9359393,18.462696299999998,0.0</coordinates>"+
+					"</LinearRing>"+
+				"</outerBoundaryIs>"+
+			"</Polygon>"+
+		"</Placemark>"+
+		"<Style id='poly-000000-1-76'>"+
+			"<LineStyle>"+
+				"<color>+ff000000</color>"+
+				"<width>+1</width>"+
+			"</LineStyle>"+
+			"<PolyStyle>"+
+				"<color>+4C000000</color>"+
+				"<fill>+1</fill>"+
+				"<outline>+1</outline>"+
+			"</PolyStyle>"+
+		"</Style>"+
+	"</Document>"+
+"</kml>";
+                    
+
         var Escasez = "http://www.google.com/intl/en_us/mapfiles/ms/micons/green-dot.png"
         var averia = "http://www.clker.com/cliparts/I/l/L/S/W/9/map-marker.svg"
         var circle = {
@@ -166,9 +202,34 @@
             scale: 30
         };
 
-        
+//        var triangleCoords = [
+//          new google.maps.LatLng(-69.9359393,18.462696299999998),
+//new google.maps.LatLng(-69.9323988,18.458768100000004),
+//new google.maps.LatLng(-69.9302959,18.4555726),
+//new google.maps.LatLng(-69.9299097,18.4555726),
+//new google.maps.LatLng(-69.9292874,18.456692),
+//new google.maps.LatLng(-69.9285364,18.457608),
+//new google.maps.LatLng(-69.9277639,18.4581372),
+//new google.maps.LatLng(-69.9263477,18.4583203),
+//new google.maps.LatLng(-69.9260473,18.4582593),
+//new google.maps.LatLng(-69.9256825,18.457587599999997),
+//new google.maps.LatLng(-69.9255967,18.458442500000004),
+//new google.maps.LatLng(-69.9253607,18.4591752),
+//new google.maps.LatLng(-69.9245882,18.4600097),
+//new google.maps.LatLng(-69.9199963,18.462899900000004),
+//new google.maps.LatLng(-69.9198031,18.4630627),
+//new google.maps.LatLng(-69.9208331,18.464853800000004),
+//new google.maps.LatLng(-69.9269915,18.463368),
+//new google.maps.LatLng(-69.9278927,18.4631645),
+//new google.maps.LatLng(-69.9284291,18.4631238),
+//new google.maps.LatLng(-69.9288368,18.4630423),
+//new google.maps.LatLng(-69.9301887,18.4655051),
+//new google.maps.LatLng(-69.9359393,18.462696299999998)
+        //        ];
+        // Define the LatLng coordinates for the polygon.
+       
         coordenada.forEach(function (entry) {
-            if(entry.estatus == 1)
+            if(entry.estatus === "No resuelto")
             {
                 var estatus = "No resuelto"
             }
@@ -180,7 +241,7 @@
             marker = new google.maps.Marker({
                 position: new google.maps.LatLng(entry.latitud, entry.longitud),
                 map: map,
-                title:  entry.situacion + "\nColaborador: "+entry.userName + " \nEstatus: "+ estatus,
+                title:  entry.situacion + "\nColaborador: "+entry.userName + " \nEstatus: "+ estatus + "\nLocalidad:"+ entry.localidad,
                 icon: detallesDeMarcadores(entry.situacion)
                 
             });
@@ -199,16 +260,7 @@
             });
         });
 
-        //bermudaTriangle = new google.maps.Polygon({
-        //    paths: triangleCoords,
-        //    strokeColor: '#FF0000',
-        //    strokeOpacity: 0.8,
-        //    strokeWeight: 3,
-        //    fillColor: '#FF0000',
-        //    fillOpacity: 0.35
-        //});
-
-        //bermudaTriangle.setMap(map);
+       
         function detallesDeMarcadores(IdSituacion)
         {
             var markerLogo;

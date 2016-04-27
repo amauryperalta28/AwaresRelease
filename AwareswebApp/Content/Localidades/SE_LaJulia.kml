@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<kml xmlns='http://www.opengis.net/kml/2.2'>
+	<Document>
+		<name>Capa sin título</name>
+		<Placemark>
+			<styleUrl>#poly-000000-1-76</styleUrl>
+			<name>La julia Sector</name>
+			<ExtendedData>
+			</ExtendedData>
+			<Polygon>
+				<outerBoundaryIs>
+					<LinearRing>
+						<tessellate>1</tessellate>
+						<coordinates>-69.9359393,18.462696299999998,0.0 -69.9323988,18.458768100000004,0.0 -69.9302959,18.4555726,0.0 -69.9299097,18.4555726,0.0 -69.9292874,18.456692,0.0 -69.9285364,18.457608,0.0 -69.9277639,18.4581372,0.0 -69.9263477,18.4583203,0.0 -69.9260473,18.4582593,0.0 -69.9256825,18.457587599999997,0.0 -69.9255967,18.458442500000004,0.0 -69.9253607,18.4591752,0.0 -69.9245882,18.4600097,0.0 -69.9199963,18.462899900000004,0.0 -69.9198031,18.4630627,0.0 -69.9208331,18.464853800000004,0.0 -69.9269915,18.463368,0.0 -69.9278927,18.4631645,0.0 -69.9284291,18.4631238,0.0 -69.9288368,18.4630423,0.0 -69.9301887,18.4655051,0.0 -69.9359393,18.462696299999998,0.0</coordinates>
+					</LinearRing>
+				</outerBoundaryIs>
+			</Polygon>
+		</Placemark>
+		<Style id='poly-000000-1-76'>
+			<LineStyle>
+				<color>ff000000</color>
+				<width>1</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>4C000000</color>
+				<fill>1</fill>
+				<outline>1</outline>
+			</PolyStyle>
+		</Style>
+	</Document>
+</kml>

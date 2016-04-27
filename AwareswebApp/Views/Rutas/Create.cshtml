@@ -7,22 +7,24 @@
 
 
 
-
 <div id="page">
     <div id="content">
         <div class="box">
 
         </div>
 
-        <h2>Creaci&oacute;n de Rutas</h2>
+        <h2>Reportes Por Situaci&oacute;n/Sector/Localidad</h2>
 
         <br />
         <div id="map_canvas" style="width: 780px; height: 460px;border-style:solid;border-width:5px;border-color:ActiveBorder">  </div>
+        @using (Html.BeginForm())
+        {
+            <p>
 
-        @*<p>
-                @Html.ActionLink("Create New", "Create")
-            </p>*@
-        
+                Usuario Corrector: var force = @Html.DropDownList("correctorFilter").ToString()
+
+            </p>
+        }
         <input id="Crear" type="submit" class="btn btn-primary dropdown-toggle" value="Crear Ruta" />
         <input id="Guardar" type="submit" class="btn btn-default dropdown-toggle" value="Guardar Ruta" />
         <input id="Cancelar" type="submit" class="btn btn-info dropdown-toggle" value="Cancelar" />
@@ -115,11 +117,11 @@
             }
 
         </table>
-        
+
         <br class="clearfix" />
     </div>
-        
-        <br class="clearfix" />
+
+    <br class="clearfix" />
 </div>
 @*@Scripts.Render("~/bundles/jquery")
     <div id="map_canvas" style="width: 910px; height: 360px;border-style:solid;border-width:5px;border-color:ActiveBorder">  </div>*@
@@ -130,10 +132,9 @@
     $(document).ready(function () {
         initialize();
     });
-
     $('#Crear').click(function()
     {
-        
+
         $('#Crear').removeClass('btn btn-primary dropdown-toggle');
         $('#Crear').addClass('btn btn-default dropdown-toggle');
 
@@ -142,6 +143,8 @@
 
         $('#infoBox').removeClass('btn btn-default dropdown-toggle');
         $('#infoBox').addClass('btn btn-primary dropdown-toggle');
+
+        
 
 
     } );
@@ -153,11 +156,11 @@
         $('#Crear').removeClass('btn btn-default dropdown-toggle');
         $('#Crear').addClass('btn btn-primary dropdown-toggle');
 
-        $('#infoBox').removeClass('btn btn-primary dropdown-toggle');
-        $('#infoBox').addClass('btn btn-default dropdown-toggle');
+        $('.infoBox').removeClass('btn btn-primary dropdown-toggle');
+        $('.infoBox').addClass('btn btn-default dropdown-toggle');
 
-        $('#infoBox1').removeClass('btn btn-primary dropdown-toggle');
-        $('#infoBox1').addClass('btn btn-default dropdown-toggle');
+        $('.infoBox1').removeClass('btn btn-primary dropdown-toggle');
+        $('.infoBox1').addClass('btn btn-default dropdown-toggle');
 
     } );
 
@@ -176,13 +179,11 @@
         $('#infoBox1').addClass('btn btn-default dropdown-toggle');
 
     } );
-
     function initialize() {
 
         var coordenada =  @Html.Raw(Json.Encode(@ViewBag.coordenadas));
         var latitud = '@ViewBag.Latitud';
         var longitud = '@ViewBag.Longitud';
-        var listaDeReportes = new Array();
 
         var mapOptions = {
             center: new google.maps.LatLng(latitud, longitud),
@@ -212,6 +213,23 @@
         var map = new google.maps.Map(document.getElementById("map_canvas"),
           mapOptions);
 
+        var triangleCoords = [
+           new google.maps.LatLng(25.774252, -80.190262),
+           new google.maps.LatLng(18.466465, -66.118292),
+           new google.maps.LatLng(32.321384, -64.75737)
+        ];
+        var bermudaTriangle;
+        bermudaTriangle = new google.maps.Polygon({
+            paths: triangleCoords,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 3,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35
+        });
+
+        bermudaTriangle.setMap(map);
+
         var Escasez = "http://www.google.com/intl/en_us/mapfiles/ms/micons/green-dot.png"
         var averia = "http://www.clker.com/cliparts/I/l/L/S/W/9/map-marker.svg"
         var circle = {
@@ -222,48 +240,51 @@
             strokeWeight: .5,
             scale: 30
         };
-       
 
-        var contentString = '<div id="contentinfoWindow">'+
+        var contentString = '<div id="content">'+
       '<div id="siteNotice">'+
       '</div>'+
-      '<h4 id="firstHeading" class="firstHeading">Datos</h4>'+
+      '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'+
       '<div id="bodyContent">'+
-         '<ol><li> Reporte de: </li>'+
-            '<li> Colaborador:</li>'+
-            '<li> Estatus:</li>'+
-        '</ol>'+
-      '<table>'+
-        '<tr>'+
-        '<td><input type="submit" class="btn btn-default dropdown-toggle" value="Agregar" /> </td>'+
-        '<td><input type="submit" class="btn btn-default dropdown-toggle" value="Eliminar" /> </td>'+
-        ' </tr>'+
-        '</table>'+
+      '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
+
+      'Heritage Site.</p>'+
+      '<p>Attribution: Uluru, <a href="http://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">'+
+      'http://en.wikipedia.org/w/index.php?title=Uluru</a> '+
+      '(last visited June 22, 2009).</p>'+
+      '<input type="submit" class="btn btn-default dropdown-toggle" value="Agregar" />'+
+      '<input type="submit" class="btn btn-default dropdown-toggle" value="Eliminar" />'+
       '</div>'+
-        '</div>';
+      '</div>';
 
         var infowindow = new google.maps.InfoWindow({
             content: contentString
         });
-        
+
         coordenada.forEach(function (entry) {
-            
+
             marker = new google.maps.Marker({
                 position: new google.maps.LatLng(entry.latitud, entry.longitud),
                 map: map,
-                title: entry.situacion + "\nColaborador: "+entry.userName + " \nEstatus: "+ entry.estatus + "\n reporte:"+entry.numReporte,
+                title: entry.situacion + "\nColaborador: "+entry.userName + " \nEstatus: "+ entry.estatus,
                 icon: detallesDeMarcadores(entry.situacion)
 
             });
-
-            if(entry.estatus == "Resuelto")
-            {
-                if (marker.getAnimation() == null) {
-                    marker.setAnimation(google.maps.Animation.BOUNCE);
-                }
-            }
-
+           
+            
             google.maps.event.addListener(marker, 'click', function() {
+                map.setZoom(18);
+                map.setCenter(new google.maps.LatLng(entry.latitud, entry.longitud));
+
+                var mark
+
+                mark = new google.maps.Marker({
+                    position: new google.maps.LatLng(entry.latitud, entry.longitud),
+                    map: map,
+                    title: entry.situacion + "\nColaborador: "+entry.userName + " \nEstatus: "+ entry.estatus,
+                    icon: detallesDeMarcadores(entry.situacion)
+
+                });
                 var infoBoxButtonClass ="btn btn-default dropdown-toggle";
                 if( $('#Crear').hasClass('btn btn-default dropdown-toggle'))
                 {
@@ -274,45 +295,42 @@
                                       '</div>'+
                                       '<h4 id="firstHeading" class="firstHeading">Datos Reporte</h4>'+
                                       '<div id="bodyContent">'+
-                                         '<ol><li> Reporte de: '+entry.situacion + ' </li>'+
+                                         '<ol><li> Reporte de: '+ entry.situacion + ' </li>'+
                                             '<li> Colaborador: '+ entry.userName+'</li>'+
                                             '<li> Estatus: '+ entry.estatus+'</li>'+
                                         '</ol>'+
                                       '<table>'+
                                         '<tr>'+
-                                        '<td><input id="infoBox" type="submit" class="'+infoBoxButtonClass+'" value="Agregar" /> </td>'+
+                                        '<td><input id="infoBox" type="submit" class="'+infoBoxButtonClass+' infoBox" value="Agregar" /> </td>'+
+                                        ' <input class="id" type="hidden" value="'+entry.numReporte+'" />'+
                                         '<td><input id="infoBox1" type="submit" class="'+infoBoxButtonClass +'" value="Eliminar" /> </td>'+
                                         ' </tr>'+
                                         '</table>'+
                                       '</div>'+
                                         '</div>';
-                
+
                 var infowindow1 = new google.maps.InfoWindow({
                     content: contentString1
                 });
-                
-                map.setZoom(18);
-                map.setCenter(new google.maps.LatLng(entry.latitud, entry.longitud));
-                infowindow1.open(map,marker);
-               
+
+
+                infowindow1.open(map,mark);
+                console.log(entry.numReporte);
                 if (marker.getAnimation() != null) {
                     marker.setAnimation(null);
                 }
-
-                
-            });
-        });
-
-        $(function () {
-            $('#menu > ul').dropotron({
-                mode: 'fade',
-                globalOffsetY: 11,
-                offsetY: -15
             });
 
+            if(entry.estatus == "Resuelto")
+            {
+                if (marker.getAnimation() == null) {
+                    marker.setAnimation(google.maps.Animation.BOUNCE);
+                }
+            }
+
+            
         });
-
-
+        
         function detallesDeMarcadores(IdSituacion)
         {
             var markerLogo;
@@ -327,8 +345,43 @@
 
             return markerLogo;
         }
-    }
 
+        var list = [];
+        list.push(force)
+        $('body').on('click','.infoBox',function(){
+            var result = $(this).parent('td').parent('tr').find('.id').val();
+            list.push(result);
+            console.log(list);
+        });
+        $('#Guardar').click(function(){
+
+            $.ajax({
+                url:"SaveRutas" ,
+                type: 'POST',
+                data: list,
+                data: JSON.stringify(list),
+                contentType: "application/json",
+                success: function (result) {
+                    if (result) {
+                        datos = result;
+                    }
+                }
+            });
+
+        })
+        google.maps.event.addDomListener(window, 'load', initialize);
+        
+            $(function () {
+                $('#menu > ul').dropotron({
+                    mode: 'fade',
+                    globalOffsetY: 11,
+                    offsetY: -15
+                });
+
+            });
+
+
+            
+        }
+    
 </script>
-
-

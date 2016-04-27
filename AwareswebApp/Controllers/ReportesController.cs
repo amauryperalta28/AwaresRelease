@@ -316,7 +316,7 @@ namespace AwareswebApp.Controllers
                         break;
                     case 2:
                         // Se actualiza el reporte a estatus Pendiente confirmar
-                        rep.estatus = "Pendiente confirmar";
+                        rep.estatus = "Pendiente";
                         break;
                     case 3:
                         // Se actualiza el reporte a estatus No resuelto

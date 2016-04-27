@@ -71,10 +71,20 @@ namespace AwareswebApp.Controllers
         /**
          * Pantalla para la creacion de rutas
          */
-        public ActionResult Create(string tipoSituacion, string sector, string localidad, string estatus)
+        public ActionResult Create(string correctorFilter)
         {
             Business obj = new Business();
 
+            var CorrectorLst = new List<string>();
+
+            
+            //Hago query en la tabla reportes en donde obtengo los sectores en los que se han reportado situaciones y los guardo en una variable
+            var CorrectorQry = from a in db.Colaboradores
+                               where a.tipoUsuario == "Corrector"
+                            select a.nombreUsuario;
+
+            CorrectorLst.AddRange(CorrectorQry.Distinct());
+            ViewBag.correctorFilter = new SelectList(CorrectorLst);
 
             var listaReportes = from a in db.Reportes
                                 where a.estatus == "No resuelto"
@@ -88,6 +98,42 @@ namespace AwareswebApp.Controllers
 
             return View(listaReportes);
             
+        }
+        [HttpPost]
+        [Route("Rutas/SaveRutas/")]
+        public ActionResult SaveRutas(List<string> model)
+        {
+            //Obtener lista de reportes
+
+            //Buscar los id de rutas distintos de la tabla rutas
+
+            var rutasid = (from a in db.Reportes_Ruta
+                           select a.numRuta).Distinct().Max();
+
+            //Almacenar el mayor y sumarle 1
+            rutasid += 1;
+
+            // AGregar reporte al encabezado
+            /*
+             * Buscar los id de rutas distintos de la tabla rutas
+
+            Almacenar el mayor y sumarle 1
+
+            insertar los id de los reportes con su id de ruta
+             */
+            var reportes_ruta = from a in model
+                                select  new Reportes_Ruta
+                                {
+                                    numReporte = Convert.ToInt32(a),
+                                    numRuta = rutasid,
+                                    fechaCreacion = DateTime.Now
+                                };
+            // Se insertan los registros en la base de datos
+            db.Reportes_Ruta.AddRange(reportes_ruta);
+            db.SaveChanges();
+
+
+            return View();
         }
     }
 }

@@ -171,6 +171,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="kmlRouteHandler.cs" />
     <Compile Include="Migrations\201412031432514_InitMigration.cs" />
     <Compile Include="Migrations\201412031432514_InitMigration.Designer.cs">
       <DependentUpon>201412031432514_InitMigration.cs</DependentUpon>
@@ -193,6 +194,7 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\egeoxml.js" />
     <Content Include="Content\Theme\images\img01.gif" />
     <Content Include="Content\Theme\images\img02.gif" />
     <Content Include="Content\Theme\images\img03.jpg" />
@@ -216,6 +218,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Content\Theme\images\Thumbs.db" />
+    <Content Include="Content\Localidades\SE_LaJulia.kml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -289,6 +292,8 @@
     <Content Include="Views\Reportes\Est_PorSector.cshtml" />
     <Content Include="Views\Reportes\Est_porEstatus.cshtml" />
     <Content Include="Views\Rutas\Create.cshtml" />
+    <Content Include="Views\Rutas\Index.cshtml" />
+    <Content Include="Views\Rutas\SaveRutas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
